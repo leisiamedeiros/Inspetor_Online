@@ -1,0 +1,27 @@
+@(listaForm: Form[model.ListaFormData])(implicit request: RequestHeader)
+
+@main("Welcome to Play") {
+
+	<div class="heading">
+	    <h5>Nova lista de exercícios</h5>
+	</div>
+	<div class="row">
+	    <form class="col s8 offset-s2" action="@routes.HomeController.createlista()" method="post">
+            <div class="input-field">
+                <label for="email">Nome:</label>
+                <input type="text" id="nome" name="nome" class="validate" required>
+            </div>
+            <div class="input-field">
+                <label for="assunto">Assunto:</label>
+                <input type="text" id="assunto" name="assunto" class="validate" required>
+            </div>
+            <div class="input-field">
+                <div class="input-field">
+                    <button type="submit" class="waves-effect btn">Enviar</button>
+                    <a class="btn red" href="/professor">Voltar</a> 
+                </div>
+            </div>
+        </form>
+	</div>
+
+}

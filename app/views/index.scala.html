@@ -1,0 +1,35 @@
+
+@main("Welcome to Play") {
+
+	<div class="row">
+	    <div class="heading">
+	        <h5>Entre como aluno ou professor</h5>
+	    </div>
+	    <div class="row">
+	        <div class="col s8 offset-s2">
+	            <div class="col s6 center">
+	                <a href="@routes.HomeController.professor">
+	                    <div class="card-panel  red accent-1">
+	                        <i class="large material-icons">perm_identity</i>
+                            <span class="white-text">
+                                <h5>PROFESSOR</h5>
+                            </span>
+                        </div>
+                    </a>
+		        	</div> 
+	            <div class="col s6 center">
+	                <a href="@routes.HomeController.aluno">
+	                    <div class="card-panel blue lighten-4">
+	                        <i class="large material-icons">android</i>
+                            <span class="white-text">
+                                <h5>ALUNO</h5>
+                            </span>
+                        </div>
+                    </a>
+		        </div>
+	        </div>
+		</div>
+	</div>
+
+
+}

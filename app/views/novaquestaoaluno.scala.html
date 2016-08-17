@@ -1,0 +1,25 @@
+@(id: Long, alunoForm: Form[model.AlunoFormData], a: Long)(implicit request: RequestHeader)
+
+@main("Welcome to Play") {
+
+  <div class="heading">
+	    <h5>Nova resposta</h5>
+	</div>
+	<div class="row">
+    <form class="col s8 offset-s2" action="@routes.HomeController.createquestaoaluno(id)" method="post">
+      <div class="input-field">
+        <label>Questao</label>
+        <input type="text" name="questao" id="questao" value="@a" readonly/>
+      </div>
+      <div class="input-field">
+        <label>Resposta:</label>
+        <textarea id="resposta" name="resposta" class="materialize-textarea" placeholder="Coloque o código nesta região" required></textarea>
+      </div>
+      <div class="input-field">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <a class="btn red" href="@routes.HomeController.questoeslista(id)">Voltar</a>
+      </div>
+    </form>
+  </div>
+
+}
