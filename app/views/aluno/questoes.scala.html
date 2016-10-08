@@ -1,6 +1,6 @@
-@(id: Long, questoes: Seq[model.Questao])(implicit request: RequestHeader)
+@(id: Long, questoes: Seq[models.Questao])(implicit request: RequestHeader)
 
-@main("Welcome to Play") {
+@main("Questões (L" + id + ") | Aluno - Eval Plataform") {
 
     <div class="heading">
       <h5>Questões da lista</h5>
@@ -21,13 +21,13 @@
               <tr>
                 <td>@a.numero</td>
                 <td>@a.enunciado</td>
-                <td><a href="@routes.HomeController.alunoresposta(id, a.numero)">Responder</a></td>
+                <td><a href="@routes.AlunoController.novaResposta(id, a.numero)">Responder</a></td>
               </tr>
             }
           }
         </tbody>
       </table>
-      <a class="btn red" href="/novaresposta">Voltar</a> 
+      <a class="btn red" href="@routes.AlunoController.listas">Voltar</a>
     </div>
   </div>
 

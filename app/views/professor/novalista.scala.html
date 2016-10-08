@@ -1,12 +1,12 @@
-@(listaForm: Form[model.ListaFormData])(implicit request: RequestHeader)
+@(listaForm: Form[forms.ListaFormData])(implicit request: RequestHeader)
 
-@main("Welcome to Play") {
+@main("Nova lista | Professor - Eval Plataform") {
 
-	<div class="heading">
-	    <h5>Nova lista de exercícios</h5>
-	</div>
-	<div class="row">
-	    <form class="col s8 offset-s2" action="@routes.HomeController.createlista()" method="post">
+    <div class="heading">
+        <h5>Nova lista de exercícios</h5>
+    </div>
+    <div class="row">
+        <form class="col s8 offset-s2" action="@routes.ProfessorController.createLista()" method="post">
             <div class="input-field">
                 <label for="email">Nome:</label>
                 <input type="text" id="nome" name="nome" class="validate" required>
@@ -18,10 +18,10 @@
             <div class="input-field">
                 <div class="input-field">
                     <button type="submit" class="waves-effect btn">Enviar</button>
-                    <a class="btn red" href="/professor">Voltar</a> 
+                    <a class="btn red" href="@routes.ProfessorController.listas">Voltar</a>
                 </div>
             </div>
         </form>
-	</div>
+    </div>
 
 }
