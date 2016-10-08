@@ -1,4 +1,4 @@
-name := """appscala"""
+name := """scala-alunoprofessor-simple"""
 
 version := "1.0-SNAPSHOT"
 
@@ -10,7 +10,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
-  "mysql" % "mysql-connector-java" % "5.1.36",
+  "org.postgresql" % "postgresql" % "9.4.1211",
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0"
 )

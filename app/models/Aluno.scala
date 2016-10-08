@@ -1,6 +1,6 @@
 package models
 
-import slick.driver.MySQLDriver.api._
+import slick.driver.PostgresDriver.api._
 
 case class Aluno(id: Long, lista: Long, questao: Long, resposta: String)
 

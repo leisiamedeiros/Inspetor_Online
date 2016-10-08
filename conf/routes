@@ -2,25 +2,20 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET    /                    controllers.HomeController.index
-GET		 /aluno					      controllers.HomeController.aluno
-GET		 /professor			      controllers.HomeController.professor
-GET    /novalista           controllers.HomeController.novalista
-POST   /novalista           controllers.HomeController.createlista
-GET		 /questoes/:id			  controllers.HomeController.questoes(id: Long)
-GET    /novaquestao/:id     controllers.HomeController.novaquestao(id: Long)
-POST   /novaquestao/:id     controllers.HomeController.createquestao(id: Long)
+GET    /                                            controllers.HomeController.index
 
-GET		 /novaresposta				controllers.HomeController.novarespostaquestao
-GET    /questoeslista/:id   controllers.HomeController.questoeslista(id:Long)
-GET    /resposta/:id/:a     controllers.HomeController.alunoresposta(id: Long, a: Long)
-POST   /resposta/:id        controllers.HomeController.createquestaoaluno(id: Long)
+GET    /aluno/respostas                             controllers.AlunoController.respostas
+GET    /aluno/listas                                controllers.AlunoController.listas
+GET    /aluno/lista/:id/questoes                    controllers.AlunoController.questoes(id: Long)
+GET    /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.novaResposta(lid: Long, qid: Long)
+POST   /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.createResposta(lid: Long, qid: Long)
 
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET    /professor/listas                    controllers.ProfessorController.listas
+GET    /professor/listas/nova               controllers.ProfessorController.novaLista
+POST   /professor/listas/nova               controllers.ProfessorController.createLista
+GET    /professor/lista/:id/questoes        controllers.ProfessorController.questoes(id: Long)
+GET    /professor/lista/:id/questoes/nova   controllers.ProfessorController.novaQuestao(id: Long)
+POST   /professor/lista/:id/questoes/nova   controllers.ProfessorController.createQuestao(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)

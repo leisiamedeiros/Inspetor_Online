@@ -1,0 +1,35 @@
+@(respostas : Seq[models.Aluno])(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Respostas | Aluno - Eval Plataform") {
+
+    <div class="heading">
+        <h5>Listas de questões resolvidas</h5>
+    </div>
+    <div class="row">
+        <div class="col s8 offset-s2">
+        <table class="table striped">
+            <thead>
+                <tr>
+                    <th>Lista</th>
+                    <th>Questão resolvida</th>
+                    <th>Sua resposta</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(aluno <- respostas){
+                    <tr>
+                        <td>@aluno.lista</td>
+                        <td>@aluno.questao</td>
+                        <td>@aluno.resposta</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <a href="@routes.AlunoController.listas" class="btn " role="button">Resolver nova questão</a>
+        </div>
+    </div>
+
+}
