@@ -1,16 +1,7 @@
 package models.daos
 
-import play.api.Play
-import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import slick.driver.JdbcProfile
-import slick.driver.PostgresDriver.api._
+import slick.driver.PostgresDriver
+import play.api.db.slick.HasDatabaseConfigProvider
 
-trait DAO[T] {
-  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
-  def add(instancia: T): Future[String]
-  def list: Future[Seq[T]]
-  def get(id: Long): Future[Option[T]]
-}
+trait DAO extends BDefinicoesTabela with HasDatabaseConfigProvider[PostgresDriver]
 
