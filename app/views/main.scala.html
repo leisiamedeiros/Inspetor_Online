@@ -11,16 +11,26 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
+  </head>
   <body class="site">
     <header>
       <div class="navbar-fixed">
-          <nav role="navigation">
+          <nav role="navigation" id="cor">
               <div class="nav-wrapper container">
-                  <a href="@routes.HomeController.index" class="brand-logo"><samp>&nbsp;Inspetor Online</samp></a>
+                  <a href="@routes.HomeController.index" class="brand-logo">
+                    <samp>&nbsp;Inspetor Online</samp>
+                  </a>
                   <ul class="right hide-on-med-and-down">
-                      <li><a href="#modalLogin" class="modal-trigger"><i class="medium material-icons">perm_identity</i></a></li>
-                      <li><a href="#"><i class="medium material-icons">power_settings_new</i></a></li>
+                      <li>
+                        <a href="#modalLogin" class="modal-trigger">
+                        <i class="large material-icons">perm_identity</i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" data-activates="slide-out" class="button-collapse show-on-large">
+                          <i class="material-icons">menu</i>
+                        </a>
+                      </li>
                   </ul>
               </div>
           </nav>
@@ -58,10 +68,48 @@
         </div>
       </div>
     </div>
+    <!--SideNavMenu-->
+    <ul id="slide-out" class="side-nav">
+        <li>
+            <div class="userView">
+              <img class="background" src="@routes.Assets.versioned("images/6.jpg")">
+              <a href="#!user"><img class="circle" src="@routes.Assets.versioned("images/codingo.png")"></a>
+              <a href="#!name"><span class="white-text name">John Doe</span></a>
+              <a href="#!email"><span class="white-text email">jdandturk.gmail.com</span></a>
+            </div>
+        </li>
+        <li>
+            <a href="#!">
+                <i class="material-icons">cloud</i>
+                First Link With Icon
+            </a>
+        </li>
+        <li>
+            <a href="#!">Second Link</a>
+        </li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+              <li>
+                <a class="collapsible-header">Dropdown<i class="material-icons">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                  <ul>
+                    <li><a href="#!">First</a></li>
+                    <li><a href="#!">Second</a></li>
+                    <li><a href="#!">Third</a></li>
+                    <li><a href="#!">Fourth</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+        </li>
+    </ul>
     <main class="site-content">
         @content
     </main>
-    <footer class="page-footer">
+    <footer class="page-footer" id="cor">
       <div class="container">
        <div class="row">
          <div class="col l6 s12">
@@ -91,6 +139,12 @@
         $(document).ready(function(){
             $('.modal-trigger').leanModal();
         });
+        $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 240
+            edge: 'right', // Choose the horizontal origin
+            closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          }
+        );
     </script>
   </body>
 </html>
