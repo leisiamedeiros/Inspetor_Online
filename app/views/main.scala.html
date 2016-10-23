@@ -1,28 +1,96 @@
 @(title: String)(content: Html)
 
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
+<html>
+  <head>
         @* Here's where we render the page title `String`. *@
         <title>@title</title>
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("materialize/css/materialize.css")">
+        <link type="text/css" rel="stylesheet" href="@routes.Assets.versioned("materialize/css/materialize.css")" media="screen,projection" />
+        <link type="text/css" rel="stylesheet" href="@routes.Assets.versioned("materialize/css/materialize.min.css")" media="screen,projection" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="@routes.HomeController.index" class="brand-logo">Home</a>
-            </div>
-        </nav>
-        <section>
-            <div class="container">
-                @content 
-            </div>
-        </section>
+  <body class="site">
+    <header>
+      <div class="navbar-fixed">
+          <nav role="navigation">
+              <div class="nav-wrapper container">
+                  <a href="@routes.HomeController.index" class="brand-logo"><samp>&nbsp;Inspetor Online</samp></a>
+                  <ul class="right hide-on-med-and-down">
+                      <li><a href="#modalLogin" class="modal-trigger"><i class="medium material-icons">perm_identity</i></a></li>
+                      <li><a href="#"><i class="medium material-icons">power_settings_new</i></a></li>
+                  </ul>
+              </div>
+          </nav>
+      </div>
+    </header>
+    <!--login modal-->
+    <div id="modalLogin" class="modal">
+      <div class="modal-content">
+        <h2 class="center-align">Login</h2>
+        <div class="center-align">
+            <div class="divider"></div>
+            <form class="col s12">
+                <div class="row center-align">
+                    <div class="input-field col m10 offset-m1 blue-text">
+                        <i class="mdi-action-account-circle prefix"></i>
+                        <input id="icon_prefix" type="text" class="validate">
+                        <label for="icon_prefix">Username</label>
+                    </div>
+                    <div class="input-field col m10 offset-m1 blue-text ">
+                        <i class="mdi-action-lock-open prefix"></i>
+                        <input id="icon_password" type="password" class="validate">
+                        <label for="icon_password">Password</label>
+                    </div>
+                    <div class="input-field col m10 offset-m1 blue-text">
+                        <input type="checkbox" class="blue-text" id="filled-in-box" checked="checked">
+                        <label for="filled-in-box">Remember me next time</label>
+                    </div>
+                </div>
+            </form>
+            <div class="divider"></div>
+            <p>
+                <a href="#" class="btn btn-flat white modal-close">Cancel</a> &nbsp;
+                <a href="#" class="waves-effect waves-blue blue btn btn-flat modal-action modal-close">Login</a>
+            </p>
+        </div>
+      </div>
+    </div>
+    <main class="site-content">
+        @content
+    </main>
+    <footer class="page-footer">
+      <div class="container">
+       <div class="row">
+         <div class="col l6 s12">
+           <h5 class="white-text">Footer Content</h5>
+           <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+         </div>
+         <div class="col l4 offset-l2 s12">
+           <h5 class="white-text">Links</h5>
+           <ul>
+             <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+             <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+           </ul>
+         </div>
+       </div>
+      </div>
+      <div class="footer-copyright">
+         <div class="container">
+           © 2016 TADS
+           <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+         </div>
+      </div>
+    </footer>
+    <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("materialize/js/materialize.min.js")"></script>
-    </body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+  </body>
 </html>

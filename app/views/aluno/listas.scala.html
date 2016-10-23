@@ -2,32 +2,28 @@
 
 @import helper._
 
-@main("Listas | Aluno - Eval Plataform") {
-
-    <div class="heading">
-        <h5>Listas de questões a resolver</h5>
+@main("Listas | Inspetor Online") {
+  <div class="section">
+    <div class="container">
+      <h5 class="teal-text center flow-text">Listas de questões a resolver</h5>
     </div>
-    <div class="row">
-        <div class="col s8 offset-s2">
-            <table class="table striped">
-                <thead>
-                    <tr>
-                        <th>Lista</th>
-                        <th>Enunciado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(lista <- listas){
-                        <tr>
-                            <td><a href="@routes.AlunoController.questoes(lista.id)">@lista.nome</a></td>
-                            <td>@lista.assunto</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <a class="btn red" href="@routes.AlunoController.respostas">Voltar</a>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <ul class="collection">
+        @for(lista <- listas){
+          <li class="collection-item avatar">
+            <i class="material-icons circle green">assignment</i>
+            <span class="title">@lista.nome</span>
+            <p>
+               @lista.assunto
+            </p>
+            <a href="@routes.AlunoController.questoes(lista.id)" class="secondary-content"><i class="material-icons">input</i></a>
+          </li>
+        }
+      </ul>
+      <a class="btn red" href="@routes.AlunoController.respostas">Voltar</a>
     </div>
-
+  </div>
 
 }

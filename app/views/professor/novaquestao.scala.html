@@ -1,42 +1,43 @@
 @(id: Long, questaoForm: Form[forms.QuestaoFormData])(implicit request: RequestHeader)
 
-@main("Nova questão (L" + id + ") | Professor - Eval Plataform") {
-
-    <div class="heading">
-        <h5>Listas de exercícios</h5>
+@main("Nova questão (L" + id + ") | Professor - Inspetor Online") {
+  <div class="section">
+    <div class="container">
+      <h5 class="teal-text center flow-text">Incluir nova questão</h5>
     </div>
-    <div class="row">
-        <form class="col s8 offset-s2" action="@routes.ProfessorController.createQuestao(id)" method="post">
-            <div class="input-field">
-                <label>Número:</label>
-                <input type="number" id="numero" name="numero" class="form-control" required>
-            </div>
+  </div>
+  <div class="row">
+    <form class="col s8 offset-s2" action="@routes.ProfessorController.createQuestao(id)" method="post">
+      <div class="input-field">
+          <label>Número:</label>
+          <input type="number" id="numero" name="numero" class="form-control" required>
+      </div>
 
-            <div class="input-field">
-                <label>Enunciado:</label>
-                <input type="text" id="enunciado" name="enunciado" class="form-control" required>
-            </div>
+      <div class="input-field">
+          <label>Enunciado:</label>
+          <input type="text" id="enunciado" name="enunciado" class="form-control" required>
+      </div>
 
-            <div class="input-field">
-                <label>Gabarito</label>
-                <textarea id="gabarito" name="gabarito" class="materialize-textarea" placeholder="Coloque o código nesta região" required></textarea>
-            </div>
+      <div class="input-field">
+          <label>Gabarito</label>
+          <textarea id="gabarito" name="gabarito" class="materialize-textarea" placeholder="Coloque o código nesta região" required></textarea>
+      </div>
 
-            <div class="input-field">
-                <label>Entrada:</label>
-                <textarea id="entrada" name="entrada" class="materialize-textarea" placeholder="Coloque a entrada nesta região" required></textarea>
-            </div>
+      <div class="input-field">
+          <label>Entrada:</label>
+          <textarea id="entrada" name="entrada" class="materialize-textarea" placeholder="Coloque a entrada nesta região" required></textarea>
+      </div>
 
-            <div class="input-field">
-                <label>Saída:</label>
-                <textarea id="saida" name="saida" class="materialize-textarea" placeholder="Coloque a entrada nesta região" required></textarea>
-            </div>
+      <div class="input-field">
+          <label>Saída:</label>
+          <textarea id="saida" name="saida" class="materialize-textarea" placeholder="Coloque a entrada nesta região" required></textarea>
+      </div>
 
-            <div class="input-field">
-                <button type="submit" class="waves-effect btn">Enviar</button>
-                <a class="btn red" href="@routes.ProfessorController.questoes(id)">Voltar</a>
-            </div>
-        </form>
-    </div>
+      <div class="input-field">
+          <button type="submit" class="waves-effect btn">Enviar</button>
+          <a class="btn red" href="@routes.ProfessorController.questoes(id)">Voltar</a>
+      </div>
+    </form>
+  </div>
 
 }

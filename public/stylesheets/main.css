@@ -1,4 +1,4 @@
-body {
+/*body {
     margin: 50px 30px !important;
 }
 .nav-wrapper a {
@@ -31,4 +31,23 @@ table {
 }
 td, th {
     word-wrap: break-word;
+}*/
+
+/*NOVO*/
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1 0 auto;;
+}
+
+#index-banner{
+  background-image: url('../images/6.jpg');
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  min-height: 450px;
 }
