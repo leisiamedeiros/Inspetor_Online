@@ -1,34 +1,22 @@
-body {
-    margin: 50px 30px !important;
+/*NOVO*/
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
-.nav-wrapper a {
-    padding: 0 15px !important;
+
+.site-content {
+  flex: 1 0 auto;;
 }
-section {
-    background-color: #FAFAFA;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-    min-height: 475px;
-    padding: 30px 0;
+
+#cor{
+  background-color: #364b71;
 }
-.heading h1, h2, h3, h4, h5, h6 {
-    margin-top: 0 !important;
-    padding: 0 30px 0;
-    text-align: center;
-}
-.card-panel i {
-    color: #FFF;
-    font-size: 30px;
-}
-table {
-    margin-bottom: 20px;
-}
-#gabarito, #resposta {
-    width: 100%;
-    min-height: 200px;
-}
-.gabaritosize {
-    max-width: 300px;
-}
-td, th {
-    word-wrap: break-word;
+
+#index-banner{
+  background-image: url('../images/6.jpg');
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  min-height: 450px;
 }

@@ -1,35 +1,69 @@
-
 @main("Inspetor Online") {
-
-    <div class="row">
-        <div class="heading">
-            <h5>Entre como aluno ou professor</h5>
-        </div>
-        <div class="row">
-            <div class="col s8 offset-s2">
-                <div class="col s6 center">
-                    <a href="@routes.ProfessorController.listas">
-                        <div class="card-panel  red accent-1">
-                            <i class="large material-icons">perm_identity</i>
-                            <span class="white-text">
-                                <h5>PROFESSOR</h5>
-                            </span>
-                        </div>
-                    </a>
-                    </div>
-                <div class="col s6 center">
-                    <a href="@routes.AlunoController.respostas">
-                        <div class="card-panel blue lighten-4">
-                            <i class="large material-icons">android</i>
-                            <span class="white-text">
-                                <h5>ALUNO</h5>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
+  <!--Outros 2-->
+  <div class="section white z-depth-1">
+    <div class="container">
+      <div class="row center">
+        <h5 class="teal-text">
+          <i class="material-icons medium">code</i>
+          <samp>
+            Resolva as questoes
+          </samp>
+        </h5>
+        <h5 class="header col s12 light">
+          O inspetor online é uma aplicação web que irá proporcionar aos alunos a correção de problemas
+          desenvolvidos pelos professores.
+        </h5>
+      </div>
     </div>
-
-
+  </div>
+  <div id="index-banner">
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m6">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="section">
+    <div class="row">
+      <div class="col s4">
+        <div class="icon-block">
+          <h2 class="center">
+            <img class="circle" src="@routes.Assets.versioned("images/brain.png")" height="68" width="68" >
+            </img>
+          </h2>
+          <!-- <h5 class="center">Speeds up development</h5> -->
+          <h5 class="light">Um dos principais objetivos do projeto é proporcionar prática
+            de programação e compartilhamento de conhecimento.
+          </h5>
+        </div>
+      </div>
+      <div class="col s4">
+        <div class="icon-block">
+          <h2 class="center">
+            <img class="circle" src="@routes.Assets.versioned("images/codingo.png")" height="68" width="68" ></img>
+          </h2>
+          <!-- <h5 class="center">Speeds up development</h5> -->
+          <h5 class="light">Aqui os professores podem criar listas de exercícios para que os alunos possam
+            praticar programação, e obter um feedback do progresso deles.
+          </h5>
+        </div>
+      </div>
+      <div class="col s4">
+        <div class="icon-block">
+          <h2 class="center">
+            <img class="circle" src="@routes.Assets.versioned("images/math.png")" height="68" width="68" ></img>
+          </h2>
+          <!-- <h5 class="center">Speeds up development</h5> -->
+          <h5 class="light">Entre no sistema e tenha acesso aos problemas
+            disponibilizados pelos professores e começe a brincadeira.
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 }

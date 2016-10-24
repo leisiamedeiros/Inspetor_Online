@@ -1,0 +1,33 @@
+@(listas : Seq[models.Lista])(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Listas | Professor - Inspetor Online") {
+  <div class="section">
+    <div class="container">
+      <h5 class="teal-text center flow-text">Listas de exercícios</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <ul class="collection">
+        @for(lista <- listas){
+          <li class="collection-item avatar">
+            <i class="material-icons circle red accent-2">assignment</i>
+            <span class="title">@lista.nome</span>
+            <p>
+               @lista.assunto
+            </p>
+            <a href="@routes.ProfessorController.questoes(lista.id)" class="secondary-content">
+              <i class="material-icons">send</i>
+            </a>
+          </li>
+        }
+      </ul>
+      <a href="@routes.ProfessorController.novaLista" class="blue waves-effect waves-circle btn-floating secondary-content">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+  </div>
+
+}
