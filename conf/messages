@@ -1,0 +1,31 @@
+acesso.negado=Usuário não autorizado
+
+##########
+# Titulos
+##########
+cadastro.titulo=Cadastro | Inspetor Online
+
+##########
+# Forms
+##########
+cadastro.form.nomeCompleto=Nome completo
+cadastro.form.email=E-mail
+cadastro.form.senha=Senha
+cadastro.form.enviar=Confirmar
+
+##########
+# Emails
+##########
+
+email.remetente=noreply@inspetoronline.com.br
+
+email.cadastrado.assunto=Inspetor Online - Confirmar cadastro
+email.cadastrado.ola=Olá {0},
+email.cadastrado.html.texto=Por favor, <a href="{0}">clique aqui</a> para confirmar o cadastro e ativar a sua conta.
+email.cadastrado.txt.texto=Por favor, acesse o link para confirmar o cadastro e ativar a sua conta: {0}
+
+email.ja.cadastrado.assunto=Inspetor Online - E-mail já cadastrado
+email.ja.cadastrado.ola=Olá {0},
+email.ja.cadastrado.html.texto=Esse e-mail ja está cadastrado. Por favor, <a href="{0}">clique aqui</a> para acessar a sua conta.
+email.ja.cadastrado.txt.texto=Esse e-mail ja está cadastrado. Por favor, acesse o link para acessar a sua conta: {0}
+

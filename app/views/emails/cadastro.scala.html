@@ -1,0 +1,8 @@
+@(usuario: Usuario, url: String)(implicit messages: Messages)
+
+<html>
+    <body>
+        <p>@messages("email.cadastrado.ola", usuario.nomeCompleto)</p>
+        <p>@Html(messages("email.cadastrado.html.texto", url))</p>
+    </body>
+</html>

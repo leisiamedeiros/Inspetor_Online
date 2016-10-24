@@ -2,13 +2,11 @@ package modules
 
 import com.google.inject.AbstractModule
 import java.time.Clock
+import net.codingwell.scalaguice.ScalaModule
 
-import services.{ApplicationTimer, AtomicCounter, Counter}
-
-class MainModule extends AbstractModule {
+class MainModule extends AbstractModule with ScalaModule {
 
   override def configure() = {
-    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone)
   }
 
 }

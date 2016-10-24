@@ -2,7 +2,14 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET    /                                            controllers.HomeController.index
+GET    /                                            controllers.MainController.index
+
+GET    /login                                       controllers.LoginController.show
+
+GET    /cadastrar                                   controllers.CadastroController.view
+POST   /cadastrar                                   controllers.CadastroController.enviar
+
+GET    /conta/ativar/:token                         controllers.AtivacaoContaController.ativar(token: java.util.UUID)
 
 GET    /aluno/respostas                             controllers.AlunoController.respostas
 GET    /aluno/listas                                controllers.AlunoController.listas

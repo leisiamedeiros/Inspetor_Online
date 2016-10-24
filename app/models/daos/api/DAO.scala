@@ -1,6 +1,6 @@
-package models.daos
+package models.daos.api
 
-import slick.driver.PostgresDriver
+import utils.PostgresDriver
 import play.api.db.slick.HasDatabaseConfigProvider
 
 trait DAO extends BDefinicoesTabela with HasDatabaseConfigProvider[PostgresDriver]

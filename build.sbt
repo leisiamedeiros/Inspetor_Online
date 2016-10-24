@@ -20,6 +20,11 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4.1211",
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
+  "com.github.tminglei" %% "slick-pg" % "0.14.3",
+  "joda-time" % "joda-time" % "2.9.4", // 2.8
+  "org.joda" % "joda-convert" % "1.8", // 1.7
+  "com.github.nscala-time" %% "nscala-time" % "2.14.0",
+  "com.github.tminglei" %% "slick-pg_joda-time" % "0.14.3",
   "org.webjars" %% "webjars-play" % "2.5.0-2",
   "net.codingwell" %% "scala-guice" % "4.0.1",
   "com.iheart" %% "ficus" % "1.2.6",
@@ -49,7 +54,7 @@ scalacOptions ++= Seq(
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 routesGenerator := InjectedRoutesGenerator
 
-routesImport += "utils.route.Binders._"
+//routesImport += "utils.route.Binders._"
 
 defaultScalariformSettings
 
