@@ -1,0 +1,3 @@
+@(usuario: Usuario, url: String)(implicit messages: Messages)
+@messages("email.cadastrado.ola", usuario.nomeCompleto)
+@messages("email.cadastrado.txt.texto", url)

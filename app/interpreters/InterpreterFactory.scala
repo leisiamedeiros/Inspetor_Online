@@ -3,6 +3,8 @@ package compilers
 import sys.process._
 import java.io.File
 
+import scala.language.postfixOps
+
 trait Interpreter {
   def run(file: File): String
 }

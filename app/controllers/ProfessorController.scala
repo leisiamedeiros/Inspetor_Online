@@ -1,50 +1,55 @@
 package controllers
 
-import forms.{ListaForm, QuestaoForm}
 import play.api._
 import play.api.mvc._
-import models.{Lista, Questao}
-import models.daos.{ListaDAO, QuestaoDAO}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ProfessorController extends Controller {
   def listas = Action.async { implicit request =>
+    /*
     ListaDAO.list map { listas =>
       Ok(views.html.professor.listas(listas))
     }
+    */
+    Future(Ok("ok"))
   }
 
   def novaLista = Action.async { implicit request =>
-    ListaDAO.list map { listas =>
-      Ok(views.html.professor.novalista(ListaForm.form))
-    }
+    // ListaDAO.list map { listas =>
+    //   Ok(views.html.professor.novalista(ListaForm.form))
+    // }
+    Future(Ok("ok"))
   }
 
   def createLista = Action.async { implicit request =>
-    ListaForm.form.bindFromRequest.fold(
-      errors => Future(BadRequest),
-      data => {
-        val newLista = Lista(0, data.nome, data.assunto)
-        ListaDAO.add(newLista).map(res =>
-          Redirect(routes.ProfessorController.listas())
-        )
-      })
+    // ListaForm.form.bindFromRequest.fold(
+    //   errors => Future(BadRequest),
+    //   data => {
+    //     val newLista = Lista(0, data.nome, data.assunto)
+    //     ListaDAO.add(newLista).map(res =>
+    //       Redirect(routes.ProfessorController.listas())
+    //     )
+    //   })
+    Future(Ok("ok"))
   }
 
   def questoes(id: Long) = Action.async { implicit request =>
-    QuestaoDAO.list map { questoes =>
-      Ok(views.html.professor.questoes(id, questoes))
-    }
+    //QuestaoDAO.list map { questoes =>
+    //  Ok(views.html.professor.questoes(id, questoes))
+    // }
+    Future(Ok("ok"))
   }
 
   def novaQuestao(id: Long) = Action.async { implicit request =>
-    QuestaoDAO.list map { questoes =>
-      Ok(views.html.professor.novaquestao(id, QuestaoForm.form))
-    }
+    //QuestaoDAO.list map { questoes =>
+    //  Ok(views.html.professor.novaquestao(id, QuestaoForm.form))
+    // }
+    Future(Ok("ok"))
   }
 
   def createQuestao(id: Long) = Action.async { implicit request =>
+    /*
     QuestaoForm.form.bindFromRequest.fold(
       errors => Future(BadRequest),
       data => {
@@ -53,6 +58,8 @@ class ProfessorController extends Controller {
           Redirect(routes.ProfessorController.questoes(id))
         )
       })
+    */
+    Future(Ok("ok"))
   }
 
 }

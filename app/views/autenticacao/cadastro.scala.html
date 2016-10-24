@@ -1,0 +1,16 @@
+@(cadastroForm: Form[forms.CadastroForm.Data])(
+    implicit request: RequestHeader,
+    messages: Messages,
+    webJarAssets: WebJarAssets
+)
+
+@main(Messages("cadastro.titulo")) {
+    @helper.form(action = routes.CadastroController.enviar()) {
+        @helper.CSRF.formField
+        @helper.inputText(cadastroForm("nomeCompleto"), '_label -> null, 'placeholder -> Messages("cadastro.form.nomeCompleto"), '_showConstraints -> false)
+        @helper.inputText(cadastroForm("email"), '_label -> null, 'type -> "email", 'placeholder -> Messages("cadastro.form.email"), '_showConstraints -> false)
+        @helper.inputPassword(cadastroForm("senha"), '_label -> null, 'placeholder -> Messages("cadastro.form.senha"), '_showConstraints -> false)
+
+        <button id="submit" type="submit" value="submit">@Messages("cadastro.form.enviar")</button>
+    }
+}
