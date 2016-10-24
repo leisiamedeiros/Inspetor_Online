@@ -20,8 +20,6 @@ CREATE TABLE login_infos (
 CREATE TABLE usuarios_has_login_infos (
   usuario_id UUID NOT NULL,
   login_info_id INTEGER NOT NULL,
-  CONSTRAINT fk_usuarios_has_login_infos_login_infos_idx
-    UNIQUE(login_info_id),
   CONSTRAINT fk_usuarios_has_login_infos_usuarios
     FOREIGN KEY (usuario_id)
     REFERENCES usuarios (id)
@@ -38,7 +36,7 @@ CREATE TABLE listas (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(45) NOT NULL,
   assunto VARCHAR(80) NOT NULL,
-  usuario_id UUID NOT NULL UNIQUE,
+  usuario_id UUID NOT NULL,
   CONSTRAINT fk_listas_usuarios_idx
     UNIQUE(usuario_id),
   CONSTRAINT fk_listas_usuarios

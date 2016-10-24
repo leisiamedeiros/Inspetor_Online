@@ -5,6 +5,7 @@
 GET    /                                            controllers.MainController.index
 
 GET    /login                                       controllers.LoginController.show
+POST   /login                                       controllers.LoginController.enviar
 
 GET    /cadastrar                                   controllers.CadastroController.view
 POST   /cadastrar                                   controllers.CadastroController.enviar
