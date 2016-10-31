@@ -1,0 +1,37 @@
+@(id: Long, questoes : Seq[models.Questao])(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Questões (L" + id + ") | Professor - Inspetor Online") {
+  <div class="section">
+    <div class="container">
+      <h5 class="teal-text center flow-text">Questões</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <ul class="collapsible popout" data-collapsible="accordion">
+        @for(questao <- questoes){
+          @if(questao.idLista == id){
+            <li>
+              <div class="collapsible-header">
+                <i class="material-icons">subject</i>Questão: @questao.numero
+              </div>
+              <div class="collapsible-body">
+                <p>@questao.enunciado</br>
+                  </br>Gabarito: <samp>@questao.gabarito</samp>
+                </p>
+              </div>
+            </li>
+         }
+       }
+     </ul>
+     <a href="@routes.ProfessorController.novaQuestao(id)" class="waves-effect waves-circle btn-floating">
+       <i class="material-icons">add</i>
+     </a>
+     <a href="@routes.ProfessorController.listas" class="red accent-2 waves-effect waves-circle btn-floating">
+       <i class="material-icons">navigate_before</i>
+     </a>
+    </div>
+  </div>
+}

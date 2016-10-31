@@ -9,13 +9,11 @@ import models.daos.api.{ ListaDAO }
 
 class ProfessorController extends Controller {
   def listas = Action.async { implicit request =>
-
-    ListaDAOImpl.list map { listas =>
-      //Ok(views.html.professor.listas(listas))
-      Ok(s"$listas")
-    }
-
-    //Future(Ok("ok"))
+    // ListaDAOImpl.list map { listas =>
+    //   //Ok(views.html.professor.listas(listas))
+    //   Ok(s"$listas")
+    // }
+    Future(Ok("ok"))
   }
 
   def novaLista = Action.async { implicit request =>
