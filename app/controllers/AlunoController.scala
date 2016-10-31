@@ -44,17 +44,7 @@ class AlunoController extends Controller {
   }
 
   def createResposta(lid: Long, qid: Long) = Action.async { implicit request =>
-    /*
-    AlunoForm.form.bindFromRequest.fold(
-      errors => Future(BadRequest),
-      data => {
-        // Original (0, id, data.questao, data.resposta)
-        val newQuestao = Aluno(0, lid, qid, data.resposta)
-        AlunoDAO.add(newQuestao).map(res =>
-          Redirect(routes.AlunoController.respostas())
-        )
-      })
-    */
+
     Future(Ok("ok"))
   }
 }

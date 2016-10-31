@@ -75,7 +75,9 @@ trait BDefinicoesTabela {
   case class BDQuestao(
     id: Int,
     numero: Int,
-    enunciado: String
+    enunciado: String,
+    gabarito: String,
+    idLista: Int
   )
 
   // Tabela de Questoes
@@ -83,7 +85,11 @@ trait BDefinicoesTabela {
     def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     def numero = column[Int]("numero")
     def enunciado = column[String]("enunciado")
-    override def * = (id, numero, enunciado) <> (BDQuestao.tupled, BDQuestao.unapply)
+    def gabarito = column[String]("gabarito")
+    def idLista = column[Int]("lista_id")
+    override def * = (id, numero, enunciado, gabarito, idLista) <> (BDQuestao.tupled, BDQuestao.unapply)
+
+    def fkidLista = foreignKey("fk_questoes_listas", idLista, listas)(_.id)
   }
 
   case class BDTeste(

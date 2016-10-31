@@ -50,8 +50,6 @@ CREATE TABLE questoes (
   id SERIAL PRIMARY KEY,
   numero INTEGER NOT NULL,
   enunciado TEXT NOT NULL,
-  entrada TEXT NOT NULL,
-  saida TEXT NOT NULL,
   gabarito TEXT NOT NULL,
   lista_id INTEGER NOT NULL,
   CONSTRAINT fk_questoes_listas
@@ -170,4 +168,3 @@ DROP TABLE usuarios_has_login_infos;
 DROP TABLE login_infos;
 
 DROP TABLE usuarios;
-

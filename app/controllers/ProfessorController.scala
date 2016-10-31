@@ -4,15 +4,18 @@ import play.api._
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import models.{ Lista }
+import models.daos.api.{ ListaDAO }
 
 class ProfessorController extends Controller {
   def listas = Action.async { implicit request =>
-    /*
-    ListaDAO.list map { listas =>
-      Ok(views.html.professor.listas(listas))
+
+    ListaDAOImpl.list map { listas =>
+      //Ok(views.html.professor.listas(listas))
+      Ok(s"$listas")
     }
-    */
-    Future(Ok("ok"))
+
+    //Future(Ok("ok"))
   }
 
   def novaLista = Action.async { implicit request =>
