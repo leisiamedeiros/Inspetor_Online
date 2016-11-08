@@ -1,8 +1,8 @@
-@(listas : Seq[models.Lista])(implicit request: RequestHeader)
+@(listas : Seq[models.Lista], usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
 @import helper._
 
-@main("Listas | Professor - Inspetor Online") {
+@main("Listas | Professor - Inspetor Online", Some(usuario), Some(listas)) {
   <div class="section">
     <div class="container">
       <h5 class="teal-text center flow-text">Listas de exercícios</h5>

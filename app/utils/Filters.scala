@@ -12,5 +12,5 @@ class Filters @Inject() (
   securityHeadersFilter: SecurityHeadersFilter
 ) extends HttpFilters {
   override def filters: Seq[EssentialFilter] =
-    Seq(csrfFilter, securityHeadersFilter)
+    Seq(csrfFilter)
 }

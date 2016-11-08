@@ -64,7 +64,6 @@ class UsuarioDAOImpl @Inject() (
     }
     db.run(action)
   }
-
   def save(usuario: Usuario): Future[Usuario] = {
     val bdUsuario = BDUsuario(
       usuario.id,
@@ -101,4 +100,5 @@ class UsuarioDAOImpl @Inject() (
     } yield ()).transactionally
     db.run(actions).map(_ => usuario)
   }
+
 }

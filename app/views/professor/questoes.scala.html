@@ -1,8 +1,8 @@
-@(id: Long, questoes : Seq[models.Questao])(implicit request: RequestHeader)
+@(id: Int, questoes : Seq[models.Questao], usuario: Usuario, listas: Seq[Lista])(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
 @import helper._
 
-@main("Questões (L" + id + ") | Professor - Inspetor Online") {
+@main("Questões (L" + id + ") | Professor - Inspetor Online", Some(usuario), Some(listas)) {
   <div class="section">
     <div class="container">
       <h5 class="teal-text center flow-text">Questões</h5>
@@ -11,18 +11,38 @@
   <div class="row">
     <div class="col s8 offset-s2">
       <ul class="collapsible popout" data-collapsible="accordion">
-        @for(questao <- questoes){
-          @if(questao.idLista == id){
+        @for((questao, index) <- questoes.zipWithIndex){
+          @if(questao.listaID == id){
             <li>
-              <div class="collapsible-header">
+              <div class="collapsible-header @if(index == 0) {active}">
                 <i class="material-icons">subject</i>Questão: @questao.numero
               </div>
               <div class="collapsible-body">
-                <p>@questao.enunciado</br>
-                  </br>Gabarito: <samp>@questao.gabarito</samp>
-                  </br>Exemplo de Entrada: <samp>@questao.entrada</samp>
-                  </br>Exemplo de Saída: <samp>@questao.saida</samp>
-                </p>
+                  <div class="row">
+                      <div class="col s12">
+                          @questao.enunciado
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12">
+                          Gabarito:
+                          </br><samp>@Html(questao.gabaritoToHtml)</samp>
+                      </div>
+                  </div>
+                  @if(!questao.entrada.isEmpty) {
+                      <div class="row">
+                          <div class="col s12">
+                              Exemplo de entrada:
+                              </br>@Html(questao.entradaToHtml)
+                          </div>
+                      </div>
+                  }
+                  <div class="row">
+                      <div class="col s12">
+                          Exemplo de saída:
+                          </br>@Html(questao.saidaToHtml)
+                      </div>
+                  </div>
               </div>
             </li>
          }

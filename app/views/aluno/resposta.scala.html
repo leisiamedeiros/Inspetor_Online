@@ -1,0 +1,22 @@
+@(resposta: Resposta, usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
+
+@main("Resposta | Aluno - Inspetor Online", Some(usuario), None) {
+  <div class="section">
+      <div class="row">
+          <div class="col s8 offset-s2">
+              <h5 class="teal-text flow-text">Resposta</h5>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col s8 offset-s2">
+              <p>Linguagem: <span class="cyan-text">@resposta.linguagem.capitalize</span>, Nota: <span class="cyan-text">@resposta.nota</span></p>
+              <p><samp>@resposta.dados</samp></p>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col s8 offset-s2">
+              <a class="btn red" href="@routes.AlunoController.respostas">Voltar</a>
+          </div>
+      </div>
+  </div>
+}

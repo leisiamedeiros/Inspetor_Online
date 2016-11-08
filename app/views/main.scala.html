@@ -1,4 +1,6 @@
-@(title: String)(content: Html)
+@(title: String, usuario: Option[Usuario] = None, listas: Option[Seq[Lista]], scripts: Html = Html(""))(content: Html)(implicit request: RequestHeader, flash: Flash, messages: Messages)
+
+@import helper._
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +9,6 @@
         <title>@title</title>
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link type="text/css" rel="stylesheet" href="@routes.Assets.versioned("materialize/css/materialize.css")" media="screen,projection" />
-        <link type="text/css" rel="stylesheet" href="@routes.Assets.versioned("materialize/css/materialize.min.css")" media="screen,projection" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,20 +18,23 @@
       <div class="navbar-fixed">
           <nav role="navigation" id="cor">
               <div class="nav-wrapper container">
-                  <a href="@routes.HomeController.index" class="brand-logo">
+                  <a href="@routes.MainController.index" class="brand-logo">
                     <samp>&nbsp;Inspetor Online</samp>
                   </a>
                   <ul class="right hide-on-med-and-down">
+                      @if(!usuario) {
                       <li>
                         <a href="#modalLogin" class="modal-trigger">
                         <i class="large material-icons">perm_identity</i>
                         </a>
                       </li>
+                      } else {
                       <li>
                         <a href="#" data-activates="slide-out" class="button-collapse show-on-large">
                           <i class="material-icons">menu</i>
                         </a>
                       </li>
+                      }
                   </ul>
               </div>
           </nav>
@@ -42,74 +46,77 @@
         <h2 class="center-align">Login</h2>
         <div class="center-align">
             <div class="divider"></div>
-            <form class="col s12">
+            <form class="col s12" action="@routes.AutenticacaoController.login" method="post">
+                @CSRF.formField
                 <div class="row center-align">
                     <div class="input-field col m10 offset-m1 blue-text">
                         <i class="mdi-action-account-circle prefix"></i>
-                        <input id="icon_prefix" type="text" class="validate">
-                        <label for="icon_prefix">Username</label>
+                        <input id="icon_prefix" type="text" class="validate" name="email">
+                        <label for="icon_prefix">E-mail</label>
                     </div>
                     <div class="input-field col m10 offset-m1 blue-text ">
                         <i class="mdi-action-lock-open prefix"></i>
-                        <input id="icon_password" type="password" class="validate">
-                        <label for="icon_password">Password</label>
+                        <input id="icon_password" type="password" class="validate" name="senha">
+                        <label for="icon_password">Senha</label>
                     </div>
                     <div class="input-field col m10 offset-m1 blue-text">
-                        <input type="checkbox" class="blue-text" id="filled-in-box" checked="checked">
-                        <label for="filled-in-box">Remember me next time</label>
+                        <input type="checkbox" class="blue-text" id="filled-in-box" value="true" checked="checked" name="lembrarMe">
+                        <label for="filled-in-box">Lembrar-me</label>
                     </div>
                 </div>
+                <div class="divider"></div>
+                <div class="section">
+                    <button class="btn btn-flat white modal-close">Cancel</button> &nbsp;
+                    <button type="submit" class="waves-effect waves-blue blue btn btn-flat modal-action modal-close">Login</button>
+                </div>
+                <p>Não possui uma conta? <a href="@routes.CadastroController.cadastro">Cadastre-se</a></p>
             </form>
-            <div class="divider"></div>
-            <p>
-                <a href="#" class="btn btn-flat white modal-close">Cancel</a> &nbsp;
-                <a href="#" class="waves-effect waves-blue blue btn btn-flat modal-action modal-close">Login</a>
-            </p>
         </div>
       </div>
     </div>
     <!--SideNavMenu-->
     <ul id="slide-out" class="side-nav">
-        <li>
-            <div class="userView">
-              <img class="background" src="@routes.Assets.versioned("images/6.jpg")">
-              <a href="#!user"><img class="circle" src="@routes.Assets.versioned("images/codingo.png")"></a>
-              <a href="#!name"><span class="white-text name">John Doe</span></a>
-              <a href="#!email"><span class="white-text email">jdandturk.gmail.com</span></a>
-            </div>
-        </li>
-        <li>
-            <a href="#!">
-                <i class="material-icons">cloud</i>
-                First Link With Icon
-            </a>
-        </li>
-        <li>
-            <a href="#!">Second Link</a>
-        </li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-        <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-              <li>
-                <a class="collapsible-header">Dropdown<i class="material-icons">arrow_drop_down</i></a>
-                <div class="collapsible-body">
-                  <ul>
-                    <li><a href="#!">First</a></li>
-                    <li><a href="#!">Second</a></li>
-                    <li><a href="#!">Third</a></li>
-                    <li><a href="#!">Fourth</a></li>
-                  </ul>
+        @for(u <- usuario) {
+            <li>
+                <div class="userView">
+                  <img class="background" src="@routes.Assets.versioned("images/6.jpg")">
+                  <a href="#!user"><img class="circle" src="@routes.Assets.versioned("images/codingo.png")"></a>
+                  <a href="#!name"><span class="white-text name">@u.nomeCompleto</span></a>
+                  <a href="#!email"><span class="white-text email">@u.email</span></a>
                 </div>
-              </li>
-            </ul>
-        </li>
+            </li>
+            <li>
+                <a href="@routes.AutenticacaoController.logout">Sair</a>
+            </li>
+            <li><div class="divider"></div></li>
+            @if(u.papel == "professor") {
+                <li><a class="waves-effect" href="@routes.ProfessorController.listas">Minhas listas</a></li>
+                <li class="no-padding">
+                    <ul class="collapsible collapsible-accordion">
+                      <li>
+                        <a class="collapsible-header">Listas<i class="material-icons">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                          <ul>
+                            @for(l <- listas) {
+                                @for(lista <- l) {
+                                    <li><a href="@routes.ProfessorController.questoes(lista.id)">@lista.nome</a></li>
+                                }
+                            }
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                </li>
+            } else {
+                <li><a class="waves-effect" href="@routes.AlunoController.respostas">Minhas respostas</a></li>
+            }
+        }
     </ul>
     <main class="site-content">
         @content
     </main>
     <footer class="page-footer" id="cor">
+    @*
       <div class="container">
        <div class="row">
          <div class="col l6 s12">
@@ -125,16 +132,18 @@
          </div>
        </div>
       </div>
+      *@
       <div class="footer-copyright">
          <div class="container">
            © 2016 TADS
-           <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+           @*<a class="grey-text text-lighten-4 right" href="#!">More Links</a>*@
          </div>
       </div>
     </footer>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("materialize/js/materialize.min.js")"></script>
+    <script src="@routes.Assets.versioned("lib/ace/src-min/ace.js")" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.modal-trigger').leanModal();
@@ -146,5 +155,6 @@
           }
         );
     </script>
+    @scripts
   </body>
 </html>

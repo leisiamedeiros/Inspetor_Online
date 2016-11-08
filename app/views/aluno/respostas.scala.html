@@ -1,8 +1,8 @@
-@(respostas : Seq[models.Aluno])(implicit request: RequestHeader)
+@(respostas: Seq[RespostaQuestao], usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
 @import helper._
 
-@main("Respostas | Aluno - Inspetor Online") {
+@main("Respostas | Aluno - Inspetor Online", Some(usuario), None) {
       <div class="section">
         <div class="container">
           <h5 class="teal-text center flow-text">Questoes Resolvidas</h5>
@@ -15,24 +15,50 @@
                   <tr>
                       <th>Lista</th>
                       <th>Questão resolvida</th>
+                      <th>Estado</th>
+                      <th>Nota</th>
                       <th>Sua resposta</th>
                   </tr>
               </thead>
               <tbody>
-                  @for(aluno <- respostas){
-                      <tr>
-                          <td>@aluno.lista</td>
-                          <td>@aluno.questao</td>
-                          <td><samp>@aluno.resposta</samp></td>
-                      </tr>
+                  @for(resposta <- respostas) {
+                  <tr>
+                      <td>@resposta.listaNome</td>
+                      <td>@resposta.questaoNumero</td>
+                      <td>@resposta.respostaEstado</td>
+                      <td>@resposta.respostaNota</td>
+                      <td><a href="@routes.AlunoController.resposta(resposta.respostaID)">Ver</a></td>
+                  </tr>
                   }
-
               </tbody>
           </table>
         </br>
-          <a href="@routes.AlunoController.listas" class="btn " role="button">Resolver nova questão</a>
+          <a href="@routes.AlunoController.listas" class="btn" role="button">Resolver nova questão</a>
         </div>
-
+        <div class="section">
+            <div class="container">
+              <h5 class="teal-text center flow-text">Legenda</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s8 offset-s2 light">
+                    <p>
+                        <strong>OK</strong> - Resposta Correta
+                    </p>
+                    <p>
+                        <strong>C</strong> - Resposta Incorreta (case-sensitive)
+                    </p>
+                    <p>
+                        <strong>S</strong> - Resposta Incorreta (espaços a mais)
+                    </p>
+                    <p>
+                        <strong>CS</strong> - Resposta Incorreta (case-sensitive e espaços a mais)
+                    </p>
+                    <p>
+                        <strong>E</strong> - Resposta Incorreta
+                    </p>
+            </div>
+        </div>
     </div>
 
 

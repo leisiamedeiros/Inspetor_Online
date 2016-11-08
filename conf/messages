@@ -1,9 +1,12 @@
 acesso.negado=Usuário não autorizado
+conta.ativada=Conta ativada com sucesso
 
 ##########
 # Titulos
 ##########
 cadastro.titulo=Cadastro | Inspetor Online
+login.titulo=Login | Inspetor Online
+ativacaoConta.titulo=Ativar Conta | Inspetor Online
 
 ##########
 # Forms
@@ -12,6 +15,7 @@ cadastro.form.nomeCompleto=Nome completo
 cadastro.form.email=E-mail
 cadastro.form.senha=Senha
 cadastro.form.enviar=Confirmar
+login.form.enviar=Enviar
 
 ##########
 # Emails

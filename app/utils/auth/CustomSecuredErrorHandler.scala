@@ -13,11 +13,11 @@ class CustomSecuredErrorHandler @Inject() (
   val messagesApi: MessagesApi
 ) extends SecuredErrorHandler with I18nSupport {
   override def onNotAuthenticated(implicit request: RequestHeader) = {
-    Future.successful(Redirect(controllers.routes.LoginController.show()))
+    Future.successful(Redirect(controllers.routes.MainController.index()))
   }
   override def onNotAuthorized(implicit request: RequestHeader) = {
     Future.successful(
-      Redirect(controllers.routes.LoginController.show())
+      Redirect(controllers.routes.MainController.index())
         .flashing("error" -> Messages("acesso.negado"))
     )
   }

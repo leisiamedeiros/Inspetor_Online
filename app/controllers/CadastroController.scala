@@ -31,18 +31,18 @@ class CadastroController @Inject() (
   mailerClient: MailerClient,
   implicit val webJarAssets: WebJarAssets
 ) extends Controller with I18nSupport {
-  def view = silhouette.UnsecuredAction.async { implicit request =>
+  def cadastro = silhouette.UnsecuredAction.async { implicit request =>
     Future.successful(Ok(views.html.autenticacao.cadastro(CadastroForm.form)))
   }
   def enviar = silhouette.UnsecuredAction.async { implicit request =>
     CadastroForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.autenticacao.cadastro(form))),
       data => {
-        val result = Redirect(routes.CadastroController.view()).flashing("info" -> Messages("cadastro.email.enviado", data.email))
+        val result = Ok(views.html.autenticacao.ativarConta(data.email))
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         usuarioService.retrieve(loginInfo).flatMap {
           case Some(usuario) =>
-            val url = routes.CadastroController.view().absoluteURL()
+            val url = routes.AutenticacaoController.login().absoluteURL()
             mailerClient.send(Email(
               subject = Messages("email.ja.cadastrado.assunto"),
               from = Messages("email.remetente"),
@@ -70,7 +70,7 @@ class CadastroController @Inject() (
             } yield {
               val url = routes.AtivacaoContaController.ativar(authToken.id).absoluteURL()
               mailerClient.send(Email(
-                subject = Messages("email.cadastro.assunto"),
+                subject = Messages("email.cadastrado.assunto"),
                 from = Messages("email.remetente"),
                 to = Seq(data.email),
                 bodyText = Some(views.txt.emails.cadastro(usuario, url).body),

@@ -17,7 +17,7 @@ import scala.language.postfixOps
 class AuthTokenServiceImpl @Inject() (
   authTokenDAO: AuthTokenDAO, clock: Clock
 ) extends AuthTokenService {
-  def create(usuario: Usuario, expiry: FiniteDuration = 5 minutes) = {
+  def create(usuario: Usuario, expiry: FiniteDuration = 20 minutes) = {
     val token = AuthToken(
       UUID.randomUUID(),
       clock.now.withZone(DateTimeZone.UTC).plusSeconds(expiry.toSeconds.toInt),
