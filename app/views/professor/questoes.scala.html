@@ -11,10 +11,10 @@
   <div class="row">
     <div class="col s8 offset-s2">
       <ul class="collapsible popout" data-collapsible="accordion">
-        @for(questao <- questoes){
+        @for((questao, index) <- questoes.zipWithIndex){
           @if(questao.listaID == id){
             <li>
-              <div class="collapsible-header">
+              <div class="collapsible-header @if(index == 0) {active}">
                 <i class="material-icons">subject</i>Questão: @questao.numero
               </div>
               <div class="collapsible-body">
