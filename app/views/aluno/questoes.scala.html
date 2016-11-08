@@ -1,6 +1,6 @@
-@(id: Long, questoes: Seq[models.Questao])(implicit request: RequestHeader)
+@(id: Int, questoes: Seq[models.Questao], usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
-@main("Questões (L" + id + ") | Aluno - Inspetor Online") {
+@main("Questões (L" + id + ") | Aluno - Inspetor Online", Some(usuario), None) {
   <div class="section">
     <div class="container">
       <h5 class="teal-text center flow-text">Questoes da Lista</h5>
@@ -10,7 +10,7 @@
     <div class="col s8 offset-s2">
       <ul class="collapsible popout" data-collapsible="accordion">
         @for(a <- questoes){
-          @if(a.idLista == id){
+          @if(a.listaID == id){
             <li>
               <div class="collapsible-header">
                 <i class="material-icons">subject</i>
@@ -18,7 +18,7 @@
               </div>
               <div class="collapsible-body">
                 <p>@a.enunciado </br></br>
-                  <a href="" class="blue waves-effect waves-circle btn-floating">
+                  <a href="@routes.AlunoController.novaResposta(a.listaID, a.id)" class="blue waves-effect waves-circle btn-floating">
                     <i class="material-icons">border_color</i>
                   </a>
                 </p>

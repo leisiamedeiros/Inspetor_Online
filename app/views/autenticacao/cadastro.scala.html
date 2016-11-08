@@ -1,16 +1,32 @@
 @(cadastroForm: Form[forms.CadastroForm.Data])(
     implicit request: RequestHeader,
+    flash: Flash,
     messages: Messages,
     webJarAssets: WebJarAssets
 )
 
-@main(Messages("cadastro.titulo")) {
-    @helper.form(action = routes.CadastroController.enviar()) {
+@main(Messages("cadastro.titulo"), None, None) {
+  <div class="section">
+    <div class="container">
+      <h5 class="teal-text center flow-text">Cadastro</h5>
+    </div>
+  </div>
+  <div class="row">
+      @helper.form(action = routes.CadastroController.enviar(), 'class -> "col s8 offset-s2") {
         @helper.CSRF.formField
+        <div class="input-field">
         @helper.inputText(cadastroForm("nomeCompleto"), '_label -> null, 'placeholder -> Messages("cadastro.form.nomeCompleto"), '_showConstraints -> false)
+        </div>
+        <div class="input-field">
         @helper.inputText(cadastroForm("email"), '_label -> null, 'type -> "email", 'placeholder -> Messages("cadastro.form.email"), '_showConstraints -> false)
+        </div>
+        <div class="input-field">
         @helper.inputPassword(cadastroForm("senha"), '_label -> null, 'placeholder -> Messages("cadastro.form.senha"), '_showConstraints -> false)
+        </div>
+        <div class="input-field">
+          <button type="submit" class="waves-effect btn">Enviar</button>
+        </div>
 
-        <button id="submit" type="submit" value="submit">@Messages("cadastro.form.enviar")</button>
     }
+  </div>
 }

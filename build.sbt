@@ -25,7 +25,10 @@ libraryDependencies ++= Seq(
   "org.joda" % "joda-convert" % "1.8", // 1.7
   "com.github.nscala-time" %% "nscala-time" % "2.14.0",
   "com.github.tminglei" %% "slick-pg_joda-time" % "0.14.3",
+
   "org.webjars" %% "webjars-play" % "2.5.0-2",
+  "org.webjars" % "ace" % "01.08.2014",
+
   "net.codingwell" %% "scala-guice" % "4.0.1",
   "com.iheart" %% "ficus" % "1.2.6",
   "com.typesafe.play" %% "play-mailer" % "5.0.0",

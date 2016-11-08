@@ -1,4 +1,5 @@
-@main("Inspetor Online") {
+@(usuario: Option[Usuario], listas: Option[Seq[Lista]])(implicit request: RequestHeader, flash: Flash, messages: Messages)
+@main("Inspetor Online", usuario, listas) {
   <!--Outros 2-->
   <div class="section white z-depth-1">
     <div class="container">

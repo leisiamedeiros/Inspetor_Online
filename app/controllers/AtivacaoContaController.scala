@@ -30,11 +30,11 @@ class AtivacaoContaController @Inject() (
       case Some(authToken) => usuarioService.retrieve(authToken.usuarioID).flatMap {
         case Some(usuario) if usuario.loginInfo.providerID == CredentialsProvider.ID =>
           usuarioService.save(usuario.copy(ativado = true)).map { _ =>
-            Redirect(routes.CadastroController.view()).flashing("success" -> Messages("conta.ativada"))
+            Redirect(routes.MainController.index())
           }
-        case _ => Future.successful(Redirect(routes.CadastroController.view()).flashing("error" -> Messages("invalido.ativacao.link")))
+        case _ => Future.successful(Redirect(routes.MainController.index()).flashing("error" -> Messages("invalido.ativacao.link")))
       }
-      case None => Future.successful(Redirect(routes.CadastroController.view()).flashing("error" -> Messages("invalido.ativacao.link")))
+      case None => Future.successful(Redirect(routes.MainController.index()).flashing("error" -> Messages("invalido.ativacao.link")))
     }
   }
 }
