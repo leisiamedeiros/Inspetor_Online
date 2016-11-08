@@ -1,22 +1,35 @@
 package controllers
 
+import com.mohiva.play.silhouette.api._
 import play.api._
 import play.api.mvc._
 import play.api.i18n.{ MessagesApi, I18nSupport }
 import play.api.libs.concurrent.Execution.Implicits._
+import play.filters.csrf._
 
 import java.util.UUID
 import javax.inject.Inject
 
-import scala.concurrent.duration._
-import com.mohiva.play.silhouette.api.LoginInfo
-import models.{ Usuario, AuthToken }
-import models.services.api.{ AuthTokenService, UsuarioService }
+import models.Usuario
+import models.daos.api.ListaDAO
+import utils.auth.DefaultEnv
 
-import scala.concurrent.{ Future, Await }
+import scala.concurrent.Future
 
-class MainController @Inject() (authTokenService: AuthTokenService, usuarioService: UsuarioService) extends Controller {
-  def index = Action.async {
-    Future.successful(Ok(views.html.index()))
+class MainController @Inject() (
+  val messagesApi: MessagesApi,
+  silhouette: Silhouette[DefaultEnv],
+  listaDAO: ListaDAO
+) extends Controller with I18nSupport {
+  def index = silhouette.UserAwareAction.async { implicit request =>
+    val usuario: Option[Usuario] = request.identity
+    usuario match {
+      case Some(u) => {
+        listaDAO.getByProfessor(u.id) map { listas =>
+          Ok(views.html.index(Some(u), Some(listas)))
+        }
+      }
+      case None => Future.successful(Ok(views.html.index(None, None)))
+    }
   }
 }

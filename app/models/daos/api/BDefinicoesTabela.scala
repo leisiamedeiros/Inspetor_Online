@@ -61,7 +61,8 @@ trait BDefinicoesTabela {
   case class BDLista(
     id: Int,
     nome: String,
-    assunto: String
+    assunto: String,
+    usuarioID: UUID
   )
 
   // Tabela de Listas
@@ -69,15 +70,18 @@ trait BDefinicoesTabela {
     def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     def nome = column[String]("nome")
     def assunto = column[String]("assunto")
-    override def * = (id, nome, assunto) <> (BDLista.tupled, BDLista.unapply)
+    def usuarioID = column[UUID]("usuario_id")
+    override def * = (id, nome, assunto, usuarioID) <> (BDLista.tupled, BDLista.unapply)
   }
 
   case class BDQuestao(
     id: Int,
     numero: Int,
     enunciado: String,
+    entrada: String,
+    saida: String,
     gabarito: String,
-    idLista: Int
+    listaID: Int
   )
 
   // Tabela de Questoes
@@ -85,17 +89,20 @@ trait BDefinicoesTabela {
     def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     def numero = column[Int]("numero")
     def enunciado = column[String]("enunciado")
+    def entrada = column[String]("entrada")
+    def saida = column[String]("saida")
     def gabarito = column[String]("gabarito")
-    def idLista = column[Int]("lista_id")
-    override def * = (id, numero, enunciado, gabarito, idLista) <> (BDQuestao.tupled, BDQuestao.unapply)
+    def listaID = column[Int]("lista_id")
+    override def * = (id, numero, enunciado, entrada, saida, gabarito, listaID) <> (BDQuestao.tupled, BDQuestao.unapply)
 
-    def fkidLista = foreignKey("fk_questoes_listas", idLista, listas)(_.id)
+    def fklistaID = foreignKey("fk_questoes_listas", listaID, listas)(_.id)
   }
 
   case class BDTeste(
     id: Int,
     entrada: Option[String],
-    saida: String
+    saida: String,
+    questaoID: Int
   )
 
   // Tabela de Testes
@@ -103,23 +110,35 @@ trait BDefinicoesTabela {
     def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     def entrada = column[Option[String]]("entrada")
     def saida = column[String]("saida")
-    override def * = (id, entrada, saida) <> (BDTeste.tupled, BDTeste.unapply)
+    def questaoID = column[Int]("questao_id")
+    override def * = (id, entrada, saida, questaoID) <> (BDTeste.tupled, BDTeste.unapply)
+
+    def fkQuestao = foreignKey("fk_testes_questoes", questaoID, questoes)(_.id)
   }
 
   case class BDResposta(
     id: Int,
-    dados: String, // FIXME: Change to BLOB
+    linguagem: String,
+    dados: String,
     estado: String,
-    nota: Option[Float]
+    nota: Option[Float],
+    usuarioID: UUID,
+    questaoID: Int
   )
 
   // Tabela de Respostas
   class Respostas(tag: Tag) extends Table[BDResposta](tag, "respostas") {
     def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    def linguagem = column[String]("linguagem")
     def dados = column[String]("dados")
     def estado = column[String]("estado")
     def nota = column[Option[Float]]("nota")
-    override def * = (id, dados, estado, nota) <> (BDResposta.tupled, BDResposta.unapply)
+    def usuarioID = column[UUID]("usuario_id")
+    def questaoID = column[Int]("questao_id")
+    override def * = (id, linguagem, dados, estado, nota, usuarioID, questaoID) <> (BDResposta.tupled, BDResposta.unapply)
+
+    def fkUsuario = foreignKey("fk_respostas_usuarios", usuarioID, usuarios)(_.id)
+    def fkQuestao = foreignKey("fk_respostas_questoes", questaoID, questoes)(_.id)
   }
 
   case class BDAuthToken(

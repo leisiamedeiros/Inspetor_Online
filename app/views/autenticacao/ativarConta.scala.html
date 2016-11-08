@@ -1,8 +1,19 @@
 @(email: String)(
     implicit request: RequestHeader,
+    flash: Flash,
     messages: Messages,
     webJarAssets: WebJarAssets
 )
 
-@main(Messages("ativacaoConta.titulo")) {
+@main(Messages("ativacaoConta.titulo"), None, None) {
+<div class="section">
+    <div class="container">
+        <h5 class="teal-text center flow-text">Cadastro realizado com sucesso!</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col s8 offset-s2">
+        <p class="center">Um e-mail foi enviado para <strong>@email</strong></p>
+    </div>
+</div>
 }

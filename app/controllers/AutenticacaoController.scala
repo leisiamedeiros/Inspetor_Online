@@ -23,7 +23,7 @@ import forms.LoginForm
 import models.services.api.UsuarioService
 import utils.auth.DefaultEnv
 
-class LoginController @Inject() (
+class AutenticacaoController @Inject() (
   val messagesApi: MessagesApi,
   silhouette: Silhouette[DefaultEnv],
   usuarioService: UsuarioService,
@@ -35,13 +35,10 @@ class LoginController @Inject() (
   implicit val webJarAssets: WebJarAssets
 ) extends Controller with I18nSupport {
 
-  def show = silhouette.UnsecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.autenticacao.login(LoginForm.form, socialProviderRegistry)))
-  }
-
-  def enviar = silhouette.UnsecuredAction.async { implicit request =>
+  def login = silhouette.UnsecuredAction.async { implicit request =>
     LoginForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.autenticacao.login(form, socialProviderRegistry))),
+      form => Future.successful(Redirect(routes.MainController.index())
+        .flashing("error" -> Messages("login.form.invalido"))),
       data => {
         val credentials = Credentials(data.email, data.senha)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
@@ -68,7 +65,11 @@ class LoginController @Inject() (
               }.flatMap { authenticator =>
                 silhouette.env.eventBus.publish(LoginEvent(usuario, request))
                 silhouette.env.authenticatorService.init(authenticator).flatMap { v =>
-                  silhouette.env.authenticatorService.embed(v, result)
+                  if (usuario.papel == "aluno") {
+                    silhouette.env.authenticatorService.embed(v, Redirect(routes.AlunoController.respostas))
+                  } else {
+                    silhouette.env.authenticatorService.embed(v, Redirect(routes.ProfessorController.listas))
+                  }
                 }
               }
             case None => Future.failed(new IdentityNotFoundException("Não foi possível encontrar o usuário"))
@@ -76,8 +77,14 @@ class LoginController @Inject() (
         }
       }.recover {
         case e: ProviderException =>
-          Redirect(routes.LoginController.show()).flashing("error" -> Messages("login.form.invalido"))
+          Redirect(routes.MainController.index()).flashing("error" -> Messages("login.form.invalido"))
       }
     )
+  }
+
+  def logout = silhouette.SecuredAction.async { implicit request =>
+    silhouette.env.authenticatorService.discard(
+      request.authenticator,
+      Redirect(routes.MainController.index()))
   }
 }

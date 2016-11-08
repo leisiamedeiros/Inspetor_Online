@@ -1,6 +1,8 @@
-@(listaForm: Form[forms.ListaFormData])(implicit request: RequestHeader)
+@(listaForm: Form[forms.ListaFormData], usuario: Usuario, listas: Seq[Lista])(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
-@main("Nova lista | Professor - Inspetor Online") {
+@import helper._
+
+@main("Nova lista | Professor - Inspetor Online", Some(usuario), Some(listas)) {
   <div class="section">
     <div class="container">
       <h5 class="teal-text center flow-text">Nova lista de exercícios</h5>
@@ -8,6 +10,7 @@
   </div>
   <div class="row">
     <form class="col s8 offset-s2" action="@routes.ProfessorController.createLista()" method="post">
+        @CSRF.formField
         <div class="input-field">
             <label for="email">Nome:</label>
             <input type="text" id="nome" name="nome" class="validate" required>

@@ -50,6 +50,8 @@ CREATE TABLE questoes (
   id SERIAL PRIMARY KEY,
   numero INTEGER NOT NULL,
   enunciado TEXT NOT NULL,
+  entrada TEXT NOT NULL,
+  saida TEXT NOT NULL,
   gabarito TEXT NOT NULL,
   lista_id INTEGER NOT NULL,
   CONSTRAINT fk_questoes_listas
@@ -61,7 +63,8 @@ CREATE TABLE questoes (
 
 CREATE TABLE respostas (
   id SERIAL PRIMARY KEY,
-  dados BYTEA NOT NULL,
+  linguagem VARCHAR(100),
+  dados TEXT NOT NULL,
   estado CHAR(2) NOT NULL,
   nota FLOAT NULL,
   usuario_id UUID NOT NULL,
@@ -143,7 +146,21 @@ CREATE TABLE openid_attributes (
   value VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE testes (
+  id SERIAL PRIMARY KEY,
+  entrada TEXT NULL,
+  saida TEXT NOT NULL,
+  questao_id INTEGER NOT NULL,
+  CONSTRAINT fk_testes_questoes
+    FOREIGN KEY (questao_id)
+    REFERENCES questoes (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 # --- !Downs
+
+DROP TABLE testes;
 
 DROP TABLE openid_attributes;
 

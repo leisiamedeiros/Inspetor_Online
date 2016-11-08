@@ -4,26 +4,27 @@
 
 GET    /                                            controllers.MainController.index
 
-GET    /login                                       controllers.LoginController.show
-POST   /login                                       controllers.LoginController.enviar
+POST   /login                                       controllers.AutenticacaoController.login
+GET    /logout                                      controllers.AutenticacaoController.logout
 
-GET    /cadastrar                                   controllers.CadastroController.view
+GET    /cadastrar                                   controllers.CadastroController.cadastro
 POST   /cadastrar                                   controllers.CadastroController.enviar
 
 GET    /conta/ativar/:token                         controllers.AtivacaoContaController.ativar(token: java.util.UUID)
 
 GET    /aluno/respostas                             controllers.AlunoController.respostas
+GET    /aluno/resposta/:id                          controllers.AlunoController.resposta(id: Int)
 GET    /aluno/listas                                controllers.AlunoController.listas
-GET    /aluno/lista/:id/questoes                    controllers.AlunoController.questoes(id: Long)
-GET    /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.novaResposta(lid: Long, qid: Long)
-POST   /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.createResposta(lid: Long, qid: Long)
+GET    /aluno/lista/:id/questoes                    controllers.AlunoController.questoes(id: Int)
+GET    /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.novaResposta(lid: Int, qid: Int)
+POST   /aluno/lista/:lid/questao/:qid/responder     controllers.AlunoController.createResposta(lid: Int, qid: Int)
 
 GET    /professor/listas                    controllers.ProfessorController.listas
 GET    /professor/listas/nova               controllers.ProfessorController.novaLista
 POST   /professor/listas/nova               controllers.ProfessorController.createLista
-GET    /professor/lista/:id/questoes        controllers.ProfessorController.questoes(id: Long)
-GET    /professor/lista/:id/questoes/nova   controllers.ProfessorController.novaQuestao(id: Long)
-POST   /professor/lista/:id/questoes/nova   controllers.ProfessorController.createQuestao(id: Long)
+GET    /professor/lista/:id/questoes        controllers.ProfessorController.questoes(id: Int)
+GET    /professor/lista/:id/questoes/nova   controllers.ProfessorController.novaQuestao(id: Int)
+POST   /professor/lista/:id/questoes/nova   controllers.ProfessorController.createQuestao(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)

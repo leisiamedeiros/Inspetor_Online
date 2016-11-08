@@ -1,8 +1,8 @@
-@(listas : Seq[models.Lista])(implicit request: RequestHeader)
+@(listas : Seq[models.Lista], usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
 
 @import helper._
 
-@main("Listas | Inspetor Online") {
+@main("Listas | Inspetor Online", Some(usuario), None) {
   <div class="section">
     <div class="container">
       <h5 class="teal-text center flow-text">Listas de questões a resolver</h5>
@@ -18,11 +18,11 @@
             <p>
                @lista.assunto
             </p>
-            <a class="secondary-content"><i class="material-icons">input</i></a>
+            <a href="@routes.AlunoController.questoes(lista.id)" class="secondary-content"><i class="material-icons">input</i></a>
           </li>
         }
       </ul>
-      <a class="btn red">Voltar</a>
+      <a href="@routes.AlunoController.respostas" class="btn red">Voltar</a>
     </div>
   </div>
 
