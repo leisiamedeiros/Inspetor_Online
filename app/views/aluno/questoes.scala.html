@@ -9,16 +9,16 @@
   <div class="row">
     <div class="col s8 offset-s2">
       <ul class="collapsible popout" data-collapsible="accordion">
-        @for(a <- questoes){
-          @if(a.listaID == id){
+        @for((questao, index) <- questoes.zipWithIndex){
+          @if(questao.listaID == id){
             <li>
-              <div class="collapsible-header">
+              <div class="collapsible-header @if(index == 0) {active}">
                 <i class="material-icons">subject</i>
-                Questão: @a.numero
+                Questão: @questao.numero
               </div>
               <div class="collapsible-body">
-                <p>@a.enunciado </br></br>
-                  <a href="@routes.AlunoController.novaResposta(a.listaID, a.id)" class="blue waves-effect waves-circle btn-floating">
+                <p>@questao.enunciado </br></br>
+                  <a href="@routes.AlunoController.novaResposta(questao.listaID, questao.id)" class="blue waves-effect waves-circle btn-floating">
                     <i class="material-icons">border_color</i>
                   </a>
                 </p>

@@ -4,15 +4,19 @@
 
 @scripts = {
     <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            $('select').material_select();
-        });
+
+        window.onload = function() {
+            $(document).ready(function() {
+                $('select').material_select();
+            });
+        }
+
         var editor = ace.edit('codigo');
         editor.getSession().setMode('ace/mode/scala');
 
-        //$('form').on('submit', function(e) {
-        //    $('#codigo-area').val(editor.getSession().getValue());
-        //});
+        $('form').on('submit', function(e) {
+            $('#codigo-area').val(editor.getSession().getValue());
+        });
 
         $('#linguagem').on('change', function() {
             editor.getSession().setMode('ace/mode/' + $(this).val());
@@ -29,16 +33,19 @@
     <div class="row">
     <form class="col s8 offset-s2" action="@routes.AlunoController.novaResposta(lid, qid)" method="post" enctype="multipart/form-data">
       @CSRF.formField
-      <div class="input-field col s12">
-          <select name="linguagem" id="linguagem" class="browser-default">
-            <option value="" disabled selected>Escolha a linguagem</option>
-            @*<option value="potigol">Potigol</option>*@
-            <option value="ruby">Ruby</option>
-            <option value="scala">Scala</option>
-          </select>
+      <div class="row">
+          <div class="input-field col s12">
+              <select name="linguagem" id="linguagem">
+                <option value="" disabled selected>Escolha a linguagem</option>
+                <option value="potigol">Potigol</option>
+                <option value="ruby">Ruby</option>
+                <option value="scala">Scala</option>
+              </select>
+              <label>Linguagem</label>
+          </div>
       </div>
       <div id="codigo"></div>
-      <textarea id="codigo-area" rows="10" style="resize: none;" name="dados" required></textarea>
+      <textarea id="codigo-area" rows="10" style="resize: none;" name="dados"></textarea>
       <div class="input-field">
         <button type="submit" class="btn btn-primary">Enviar</button>
         <a class="btn red" href="@routes.AlunoController.questoes(lid)">Voltar</a>

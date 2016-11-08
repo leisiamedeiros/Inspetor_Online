@@ -19,17 +19,17 @@ trait Interpretador {
         pw.write(e)
         pw.close
         try {
-          saida = Some(this.executar(arquivoCodigo.getPath(), arquivoEntrada.getPath()))
+          saida = Some(this.executar(arquivoCodigo.getPath(), arquivoEntrada))
         } finally {
-          arquivoCodigo.delete();
-          arquivoEntrada.delete();
+          arquivoCodigo.delete()
+          arquivoEntrada.delete()
         }
       }
       case None => {
         try {
           saida = Some(this.executar(arquivoCodigo.getPath()))
         } finally {
-          arquivoCodigo.delete();
+          arquivoCodigo.delete()
         }
       }
     }
@@ -37,7 +37,7 @@ trait Interpretador {
   }
 
   def executar(caminho_codigo: String): String
-  def executar(caminho_codigo: String, caminho_entrada: String): String
+  def executar(caminho_codigo: String, entrada: File): String
 
 }
 
@@ -45,17 +45,17 @@ object InterpretadorFabrica {
 
   private class Scala extends Interpretador {
     override def executar(caminho_codigo: String) = f"scala ${caminho_codigo}" !!
-    override def executar(caminho_codigo: String, caminho_entrada: String) = f"scala ${caminho_codigo} < ${caminho_entrada}" !!
+    override def executar(caminho_codigo: String, entrada: File) = f"scala ${caminho_codigo}" #< entrada !!
   }
 
   private class Potigol extends Interpretador {
     override def executar(caminho_codigo: String) = f"java -jar potigol.jar ${caminho_codigo}" !!
-    override def executar(caminho_codigo: String, caminho_entrada: String) = f"java -jar potigol.jar ${caminho_codigo} < ${caminho_entrada}" !!
+    override def executar(caminho_codigo: String, entrada: File) = f"java -jar potigol.jar ${caminho_codigo}" #< entrada !!
   }
 
   private class Ruby extends Interpretador {
     override def executar(caminho_codigo: String) = f"ruby ${caminho_codigo}" !!
-    override def executar(caminho_codigo: String, caminho_entrada: String) = f"ruby ${caminho_codigo} < ${caminho_entrada}" !!
+    override def executar(caminho_codigo: String, entrada: File) = f"ruby ${caminho_codigo}" #< entrada !!
   }
 
   def apply(language: String): Interpretador = {
