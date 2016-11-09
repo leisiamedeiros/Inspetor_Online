@@ -15,31 +15,59 @@
   </head>
   <body class="site">
     <header>
-      <div class="navbar-fixed">
-          <nav role="navigation" id="cor">
-              <div class="nav-wrapper container">
-                  <a href="@routes.MainController.index" class="brand-logo">
-                    <samp>&nbsp;Inspetor Online</samp>
-                  </a>
-                  <ul class="right hide-on-med-and-down">
-                      @if(!usuario) {
-                      <li>
-                        <a href="#modalLogin" class="modal-trigger">
-                        <i class="large material-icons">perm_identity</i>
-                        </a>
-                      </li>
-                      } else {
-                      <li>
-                        <a href="#" data-activates="slide-out" class="button-collapse show-on-large">
-                          <i class="material-icons">menu</i>
-                        </a>
-                      </li>
-                      }
-                  </ul>
-              </div>
-          </nav>
-      </div>
+
+        <div class="navbar-fixed">
+            <nav role="navigation" id="cor">
+                <div class="nav-wrapper container">
+                    <a href="@routes.MainController.index" class="brand-logo right"><samp>&nbsp;Inspetor Online</samp></a>
+                    <!--SideNavMenu-->
+                    <ul id="slide-out" class="side-nav">
+                        @for(u <- usuario) {
+                            <li>
+                                <div class="userView">
+                                    <img class="background" src="@routes.Assets.versioned("images/6.jpg")">
+                                    <a href="#!user"><img class="circle" src="@routes.Assets.versioned("images/codingo.png")"></a>
+                                    <a href="#!name"><span class="white-text name">@u.nomeCompleto</span></a>
+                                    <a href="#!email"><span class="white-text email">@u.email</span></a>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="@routes.AutenticacaoController.logout">Sair</a>
+                            </li>
+                            <li><div class="divider"></div></li>
+                            @if(u.papel == "professor") {
+                                <li><a class="waves-effect" href="@routes.ProfessorController.listas">Minhas listas</a></li>
+                                <li class="no-padding">
+                                    <ul class="collapsible collapsible-accordion">
+                                    <li>
+                                        <a class="collapsible-header">Listas<i class="material-icons">arrow_drop_down</i></a>
+                                        <div class="collapsible-body">
+                                        <ul>
+                                            @for(l <- listas) {
+                                                @for(lista <- l) {
+                                                    <li><a href="@routes.ProfessorController.questoes(lista.id)">@lista.nome</a></li>
+                                                }
+                                            }
+                                        </ul>
+                                        </div>
+                                    </li>
+                                    </ul>
+                                </li>
+                            } else {
+                                <li><a class="waves-effect" href="@routes.AlunoController.respostas">Minhas respostas</a></li>
+                            }
+                        }
+                        </ul>
+                        @if(!usuario) {
+                            <a href="#modalLogin" class="modal-trigger"><i class="large material-icons">perm_identity</i></a>
+                        } else {
+                            <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+                        }
+                </div>
+            </nav>
+        </div>
     </header>
+
     <!--login modal-->
     <div id="modalLogin" class="modal">
       <div class="modal-content">
@@ -74,44 +102,10 @@
         </div>
       </div>
     </div>
-    <!--SideNavMenu-->
-    <ul id="slide-out" class="side-nav">
-        @for(u <- usuario) {
-            <li>
-                <div class="userView">
-                  <img class="background" src="@routes.Assets.versioned("images/6.jpg")">
-                  <a href="#!user"><img class="circle" src="@routes.Assets.versioned("images/codingo.png")"></a>
-                  <a href="#!name"><span class="white-text name">@u.nomeCompleto</span></a>
-                  <a href="#!email"><span class="white-text email">@u.email</span></a>
-                </div>
-            </li>
-            <li>
-                <a href="@routes.AutenticacaoController.logout">Sair</a>
-            </li>
-            <li><div class="divider"></div></li>
-            @if(u.papel == "professor") {
-                <li><a class="waves-effect" href="@routes.ProfessorController.listas">Minhas listas</a></li>
-                <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Listas<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            @for(l <- listas) {
-                                @for(lista <- l) {
-                                    <li><a href="@routes.ProfessorController.questoes(lista.id)">@lista.nome</a></li>
-                                }
-                            }
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
-                </li>
-            } else {
-                <li><a class="waves-effect" href="@routes.AlunoController.respostas">Minhas respostas</a></li>
-            }
-        }
-    </ul>
+
+
+
+
     <main class="site-content">
         @content
     </main>
@@ -150,7 +144,7 @@
         });
         $('.button-collapse').sideNav({
             menuWidth: 300, // Default is 240
-            edge: 'right', // Choose the horizontal origin
+            edge: 'left', // Choose the horizontal origin
             closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
           }
         );

@@ -37,8 +37,6 @@ CREATE TABLE listas (
   nome VARCHAR(45) NOT NULL,
   assunto VARCHAR(80) NOT NULL,
   usuario_id UUID NOT NULL,
-  CONSTRAINT fk_listas_usuarios_idx
-    UNIQUE(usuario_id),
   CONSTRAINT fk_listas_usuarios
     FOREIGN KEY (usuario_id)
     REFERENCES usuarios (id)
