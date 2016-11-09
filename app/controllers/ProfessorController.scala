@@ -72,13 +72,19 @@ class ProfessorController @Inject() (
   def interpretarTeste(teste: File): Array[String] = {
     var resultado = Array("", "")
     var i = 0
-    for (linha <- Source.fromFile(teste).getLines()) {
+    val linhas = Source.fromFile(teste).getLines
+    var linha = linhas.next
+    while (linhas.hasNext) {
       linha match {
         case "#entrada" => i = 0
         case "#saida" => i = 1
-        case texto => resultado(i) += texto + "\n"
+        case texto => {
+          resultado(i) += texto + "\n"
+        }
       }
+      linha = linhas.next
     }
+    resultado(i) += linha
     return resultado
   }
 
