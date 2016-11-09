@@ -49,7 +49,7 @@ class TesteDAOImpl @Inject() (
   }
 
   def listByQuestao(id: Int): Future[Seq[Teste]] = {
-    val query = testes.filter(_.id === id).result
+    val query = testes.filter(_.questaoID === id).result
     val action = for {
       queryResult <- query
     } yield {
