@@ -7,24 +7,13 @@ import scala.language.postfixOps
 
 trait Interpretador {
 
-  def process_stream(stream: Stream[String]): String = {
-    var resultado = ""
-    val linhas = stream.toIterator
-    var linha = linhas.next
-    while (linhas.hasNext) {
-      resultado += linha + "\n"
-      linha = linhas.next
-    }
-    resultado += linha
-    return resultado
-  }
+  def process_stream(stream: Stream[String]): String = stream.toList.mkString("\n")
 
   def interpretar(codigo: String, entrada: Option[String]): Option[String] = {
     val arquivoCodigo: File = File.createTempFile("codigo", ".tmp")
     var pw = new PrintWriter(arquivoCodigo)
     pw.write(codigo)
     pw.close
-    var saida: Option[String] = None
     var saida_stream: Stream[String] = null
     entrada match {
       case Some(e) => {
@@ -47,30 +36,26 @@ trait Interpretador {
         }
       }
     }
-    saida = Some(this.process_stream(saida_stream))
+    val saida = Some(this.process_stream(saida_stream))
     return saida
   }
-
-  def executar(caminho_codigo: String): Stream[String]
-  def executar(caminho_codigo: String, entrada: File): Stream[String]
-
+  val exec: String
+  def executar(caminho_codigo: String): Stream[String] = s"${exec} ${caminho_codigo}" lineStream_!
+  def executar(caminho_codigo: String, entrada: File): Stream[String] = s"${exec} ${caminho_codigo}" #< entrada lineStream_!
 }
 
 object InterpretadorFabrica {
 
   private class Scala extends Interpretador {
-    override def executar(caminho_codigo: String) = f"scala ${caminho_codigo}" lineStream_!
-    override def executar(caminho_codigo: String, entrada: File) = f"scala ${caminho_codigo}" #< entrada lineStream_!
+    val exec = "scala"
   }
 
   private class Potigol extends Interpretador {
-    override def executar(caminho_codigo: String) = f"java -jar potigol.jar ${caminho_codigo}" lineStream_!
-    override def executar(caminho_codigo: String, entrada: File) = f"java -jar potigol.jar ${caminho_codigo}" #< entrada lineStream_!
+    val exec = "java -jar potigol.jar"
   }
 
   private class Ruby extends Interpretador {
-    override def executar(caminho_codigo: String) = f"ruby ${caminho_codigo}" lineStream_!
-    override def executar(caminho_codigo: String, entrada: File) = f"ruby ${caminho_codigo}" #< entrada lineStream_!
+    val exec = "ruby"
   }
 
   def apply(language: String): Interpretador = {

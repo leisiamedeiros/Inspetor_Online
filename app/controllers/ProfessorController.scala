@@ -28,21 +28,23 @@ class ProfessorController @Inject() (
   testeDAO: TesteDAO
 ) extends Controller with I18nSupport {
 
-  def listas = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  val professor = silhouette.SecuredAction(WithRole("professor"))
+
+  def listas = professor.async { implicit request =>
     val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
       Ok(views.html.professor.listas(listas, request.identity))
     }
   }
 
-  def novaLista = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  def novaLista = professor.async { implicit request =>
     val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
       Ok(views.html.professor.novalista(ListaForm.form, request.identity, listas))
     }
   }
 
-  def createLista = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  def createLista = professor.async { implicit request =>
     ListaForm.form.bindFromRequest.fold(
       errors => Future(BadRequest),
       data => {
@@ -53,7 +55,7 @@ class ProfessorController @Inject() (
       })
   }
 
-  def questoes(id: Int) = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  def questoes(id: Int) = professor.async { implicit request =>
     val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
       Await.result(questaoDAO.list map { q =>
@@ -62,7 +64,7 @@ class ProfessorController @Inject() (
     }
   }
 
-  def novaQuestao(id: Int) = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  def novaQuestao(id: Int) = professor.async { implicit request =>
     val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
       Ok(views.html.professor.novaquestao(id, QuestaoForm.form, request.identity, listas))
@@ -88,7 +90,7 @@ class ProfessorController @Inject() (
     return resultado
   }
 
-  def createQuestao(id: Int) = silhouette.SecuredAction(WithRole("professor")).async { implicit request =>
+  def createQuestao(id: Int) = professor.async { implicit request =>
     QuestaoForm.form.bindFromRequest.fold(
       errors => Future(BadRequest),
       data => {

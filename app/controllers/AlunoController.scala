@@ -25,26 +25,28 @@ class AlunoController @Inject() (
   testeDAO: TesteDAO
 ) extends Controller with I18nSupport {
 
-  def respostas = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  val aluno = silhouette.SecuredAction(WithRole("aluno"))
+
+  def respostas = aluno.async { implicit request =>
     val usuario: Usuario = request.identity
     respostaDAO.listByAluno(usuario.id).map { respostas =>
       Ok(views.html.aluno.respostas(respostas, request.identity))
     }
   }
 
-  def listas = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  def listas = aluno.async { implicit request =>
     listaDAO.list map { listas =>
       Ok(views.html.aluno.listas(listas, request.identity))
     }
   }
 
-  def questoes(id: Int) = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  def questoes(id: Int) = aluno.async { implicit request =>
     questaoDAO.list map { questoes =>
       Ok(views.html.aluno.questoes(id, questoes, request.identity))
     }
   }
 
-  def resposta(id: Int) = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  def resposta(id: Int) = aluno.async { implicit request =>
     respostaDAO.get(id) map { respostaOption =>
       respostaOption match {
         case Some(resposta) =>
@@ -55,13 +57,13 @@ class AlunoController @Inject() (
     }
   }
 
-  def novaResposta(lid: Int, qid: Int) = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  def novaResposta(lid: Int, qid: Int) = aluno.async { implicit request =>
     questaoDAO.list map { respostas =>
       Ok(views.html.aluno.novaresposta(lid, RespostaForm.form, qid, request.identity))
     }
   }
 
-  def createResposta(lid: Int, qid: Int) = silhouette.SecuredAction(WithRole("aluno")).async { implicit request =>
+  def createResposta(lid: Int, qid: Int) = aluno.async { implicit request =>
     RespostaForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.aluno.novaresposta(lid, form, qid, request.identity))),
       data => {

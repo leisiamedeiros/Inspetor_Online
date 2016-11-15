@@ -9,13 +9,8 @@ case class Questao(
   gabarito: String,
   listaID: Int
 ) {
-  def gabaritoToHtml: String = {
-    gabarito.replace("\n", "</br>").replace("\r", "&nbsp;&nbsp;")
-  }
-  def entradaToHtml: String = {
-    entrada.replace("\n", "</br>").replace("\r", "&nbsp;&nbsp;")
-  }
-  def saidaToHtml: String = {
-    saida.replace("\n", "</br>").replace("\r", "&nbsp;&nbsp;")
-  }
+  private def toHtml(s: String) = s.replace("\n", "</br>").replace("\r", "&nbsp;&nbsp;")
+  def gabaritoToHtml: String = toHtml(gabarito)
+  def entradaToHtml: String = toHtml(entrada)
+  def saidaToHtml: String = toHtml(saida)
 }
