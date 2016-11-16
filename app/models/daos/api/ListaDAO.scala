@@ -1,10 +1,10 @@
 package models.daos.api
 
-import models.Lista
-
-import scala.concurrent.Future
-
 import java.util.UUID
+
+import concurrent.Future
+
+import models.Lista
 
 trait ListaDAO extends DAO {
   def add(instancia: Lista): Future[Lista]

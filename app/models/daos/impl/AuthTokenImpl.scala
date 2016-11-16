@@ -1,20 +1,19 @@
 package models.daos.impl
 
 import java.util.UUID
+
+import concurrent.Future
+
 import org.joda.time.DateTime
 
-import models.{ AuthToken, Usuario }
-import models.daos.api.AuthTokenDAO
-
 import javax.inject.Inject
+import models.AuthToken
+import models.daos.api.AuthTokenDAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.Future
-
 class AuthTokenDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends AuthTokenDAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends AuthTokenDAO {
 
   import driver.api._
 
@@ -28,8 +27,7 @@ class AuthTokenDAOImpl @Inject() (
           AuthToken(
             authTokenRow.id,
             authTokenRow.expiry,
-            authTokenRow.usuarioID
-          )
+            authTokenRow.usuarioID)
       }
     }
     db.run(action)
@@ -45,8 +43,7 @@ class AuthTokenDAOImpl @Inject() (
           AuthToken(
             authTokenRow.id,
             authTokenRow.expiry,
-            authTokenRow.usuarioID
-          )
+            authTokenRow.usuarioID)
       }
     }
     db.run(action)
@@ -56,8 +53,7 @@ class AuthTokenDAOImpl @Inject() (
     val bdAuthToken = BDAuthToken(
       token.id,
       token.usuarioID,
-      token.expiry
-    )
+      token.expiry)
     val query = authTokens.returning(authTokens.map(_.id))
     val action = (query += bdAuthToken).transactionally
     db.run(action).map(_ => token)

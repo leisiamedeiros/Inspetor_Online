@@ -1,13 +1,13 @@
 package interpretadores
 
-import sys.process._
 import java.io.{ File, PrintWriter }
-
 import scala.language.postfixOps
+
+import sys.process.stringToProcess
 
 trait Interpretador {
 
-  def process_stream(stream: Stream[String]): String = stream.toList.mkString("\n")
+  def process_stream(stream: Stream[String]): String = stream.mkString("\n")
 
   def interpretar(codigo: String, entrada: Option[String]): Option[String] = {
     val arquivoCodigo: File = File.createTempFile("codigo", ".tmp")
@@ -17,13 +17,14 @@ trait Interpretador {
     var saida_stream: Stream[String] = null
     entrada match {
       case Some(e) => {
-        val arquivoEntrada: File = File.createTempFile("entrada", ".tmp")
+        val arquivoEntrada = File.createTempFile("entrada", ".tmp")
         pw = new PrintWriter(arquivoEntrada)
         pw.write(e)
         pw.close
         try {
           saida_stream = this.executar(arquivoCodigo.getPath(), arquivoEntrada)
-        } finally {
+        }
+        finally {
           arquivoCodigo.delete()
           arquivoEntrada.delete()
         }
@@ -31,7 +32,8 @@ trait Interpretador {
       case None => {
         try {
           saida_stream = this.executar(arquivoCodigo.getPath())
-        } finally {
+        }
+        finally {
           arquivoCodigo.delete()
         }
       }
@@ -46,23 +48,21 @@ trait Interpretador {
 
 object InterpretadorFabrica {
 
-  private class Scala extends Interpretador {
-    val exec = "scala"
+  private object Scala extends Interpretador {
+    override val exec = "scala"
   }
 
-  private class Potigol extends Interpretador {
-    val exec = "java -jar potigol.jar"
+  private object Potigol extends Interpretador {
+    override val exec = "java -jar potigol.jar"
   }
 
-  private class Ruby extends Interpretador {
-    val exec = "ruby"
+  private object Ruby extends Interpretador {
+    override val exec = "ruby"
   }
 
-  def apply(language: String): Interpretador = {
-    language match {
-      case "scala" => return new Scala
-      case "potigol" => return new Potigol
-      case "ruby" => return new Ruby
-    }
+  def apply(language: String): Interpretador = language match {
+    case "scala"   => Scala
+    case "potigol" => Potigol
+    case "ruby"    => Ruby
   }
 }

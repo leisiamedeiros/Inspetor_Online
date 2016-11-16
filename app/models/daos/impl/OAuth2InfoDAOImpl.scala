@@ -1,18 +1,18 @@
 package models.daos.impl
 
+import concurrent.Future
+
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.impl.providers.OAuth2Info
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import play.api.libs.concurrent.Execution.Implicits._
-import javax.inject.Inject
-import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.Future
 
+import javax.inject.Inject
 import models.daos.api.DAO
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class OAuth2InfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends DelegableAuthInfoDAO[OAuth2Info] with DAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[OAuth2Info] with DAO {
 
   import driver.api._
 
@@ -33,8 +33,7 @@ class OAuth2InfoDAOImpl @Inject() (
           authInfo.tokenType,
           authInfo.expiresIn,
           authInfo.refreshToken,
-          bdLoginInfo.id
-        )
+          bdLoginInfo.id)
     }.transactionally
 
   protected def updateAction(loginInfo: LoginInfo, authInfo: OAuth2Info) =
@@ -43,14 +42,12 @@ class OAuth2InfoDAOImpl @Inject() (
         bdOAuth2Info.accessToken,
         bdOAuth2Info.tokenType,
         bdOAuth2Info.expiresIn,
-        bdOAuth2Info.refreshToken
-      ))
+        bdOAuth2Info.refreshToken))
       .update((
         authInfo.accessToken,
         authInfo.tokenType,
         authInfo.expiresIn,
-        authInfo.refreshToken
-      ))
+        authInfo.refreshToken))
 
   def find(loginInfo: LoginInfo): Future[Option[OAuth2Info]] = {
     db.run(oauth2InfoQuery(loginInfo)
@@ -60,9 +57,7 @@ class OAuth2InfoDAOImpl @Inject() (
           bdOAuth2Info.accessToken,
           bdOAuth2Info.tokenType,
           bdOAuth2Info.expiresIn,
-          bdOAuth2Info.refreshToken
-        )
-      )
+          bdOAuth2Info.refreshToken))
     }
   }
 

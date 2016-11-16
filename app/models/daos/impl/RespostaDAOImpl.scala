@@ -1,19 +1,17 @@
 package models.daos.impl
 
-import models.{ Resposta, RespostaQuestao }
-import models.daos.api.RespostaDAO
+import java.util.UUID
+
+import concurrent.Future
 
 import javax.inject.Inject
+import models.{ Resposta, RespostaQuestao }
+import models.daos.api.RespostaDAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.Future
-
-import java.util.UUID
-
 class RespostaDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends RespostaDAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends RespostaDAO {
 
   import driver.api._
 
@@ -25,8 +23,7 @@ class RespostaDAOImpl @Inject() (
       instancia.estado,
       instancia.nota,
       instancia.usuarioID,
-      instancia.questaoID
-    )
+      instancia.questaoID)
     val query = respostas
     db.run(query += bdResposta).map(_ => instancia)
   }
@@ -72,11 +69,9 @@ class RespostaDAOImpl @Inject() (
             questaoRow.numero,
             respostaRow.id,
             respostaRow.estado,
-            respostaRow.nota
-          )
+            respostaRow.nota)
       }
     }
     db.run(action)
   }
-
 }

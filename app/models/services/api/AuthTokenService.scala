@@ -2,11 +2,11 @@ package models.services.api
 
 import java.util.UUID
 
-import models.{ AuthToken, Usuario }
+import concurrent.Future
+import concurrent.duration.{ DurationInt, FiniteDuration }
+import language.postfixOps
 
-import scala.concurrent.Future
-import scala.concurrent.duration._
-import scala.language.postfixOps
+import models.{ AuthToken, Usuario }
 
 trait AuthTokenService {
   def create(usuario: Usuario, expiry: FiniteDuration = 5 minutes): Future[AuthToken]

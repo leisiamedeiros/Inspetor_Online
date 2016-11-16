@@ -7,8 +7,7 @@ case class Questao(
   entrada: String,
   saida: String,
   gabarito: String,
-  listaID: Int
-) {
+  listaID: Int) {
   private def toHtml(s: String) = s.replace("\n", "</br>").replace("\r", "&nbsp;&nbsp;")
   def gabaritoToHtml: String = toHtml(gabarito)
   def entradaToHtml: String = toHtml(entrada)

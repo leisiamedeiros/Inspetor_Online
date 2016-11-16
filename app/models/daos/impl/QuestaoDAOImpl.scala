@@ -1,17 +1,15 @@
 package models.daos.impl
 
-import models.Questao
-import models.daos.api.QuestaoDAO
+import concurrent.Future
 
 import javax.inject.Inject
+import models.Questao
+import models.daos.api.QuestaoDAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.Future
-
 class QuestaoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends QuestaoDAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends QuestaoDAO {
 
   import driver.api._
 
@@ -23,8 +21,7 @@ class QuestaoDAOImpl @Inject() (
       instancia.entrada,
       instancia.saida,
       instancia.gabarito,
-      instancia.listaID
-    )
+      instancia.listaID)
     val query = questoes returning questoes.map(_.id) into ((questao, id) => questao.copy(id = id))
     db.run(query += bdQuestao).map(q => Questao(q.id, q.numero, q.enunciado, q.entrada, q.saida, q.gabarito, q.listaID))
   }

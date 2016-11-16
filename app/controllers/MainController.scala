@@ -1,26 +1,21 @@
 package controllers
 
-import com.mohiva.play.silhouette.api._
-import play.api._
-import play.api.mvc._
-import play.api.i18n.{ MessagesApi, I18nSupport }
-import play.api.libs.concurrent.Execution.Implicits._
-import play.filters.csrf._
+import concurrent.Future
 
-import java.util.UUID
+import com.mohiva.play.silhouette.api.Silhouette
+
 import javax.inject.Inject
-
 import models.Usuario
 import models.daos.api.ListaDAO
+import play.api.i18n.{ I18nSupport, MessagesApi }
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.mvc.Controller
 import utils.auth.DefaultEnv
-
-import scala.concurrent.Future
 
 class MainController @Inject() (
   val messagesApi: MessagesApi,
   silhouette: Silhouette[DefaultEnv],
-  listaDAO: ListaDAO
-) extends Controller with I18nSupport {
+  listaDAO: ListaDAO) extends Controller with I18nSupport {
   def index = silhouette.UserAwareAction.async { implicit request =>
     val usuario: Option[Usuario] = request.identity
     usuario match {

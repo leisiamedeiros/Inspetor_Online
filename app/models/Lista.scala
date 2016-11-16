@@ -6,5 +6,4 @@ case class Lista(
   id: Int,
   nome: String,
   assunto: String,
-  usuarioID: UUID
-)
+  usuarioID: UUID)

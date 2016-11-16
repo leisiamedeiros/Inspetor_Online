@@ -1,17 +1,15 @@
 package models.daos.impl
 
-import models.Teste
-import models.daos.api.TesteDAO
+import concurrent.Future
 
 import javax.inject.Inject
+import models.Teste
+import models.daos.api.TesteDAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.Future
-
 class TesteDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends TesteDAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends TesteDAO {
 
   import driver.api._
 
@@ -20,8 +18,7 @@ class TesteDAOImpl @Inject() (
       instancia.id,
       instancia.entrada,
       instancia.saida,
-      instancia.questaoID
-    )
+      instancia.questaoID)
     val query = testes
     db.run(query += bdTeste).map(_ => instancia)
   }

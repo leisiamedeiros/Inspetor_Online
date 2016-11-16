@@ -1,8 +1,8 @@
 package models.daos.api
 
-import models.Teste
+import concurrent.Future
 
-import scala.concurrent.Future
+import models.Teste
 
 trait TesteDAO extends DAO {
   def add(instancia: Teste): Future[Teste]

@@ -2,10 +2,11 @@ package models.daos.api
 
 import java.util.UUID
 
-import com.mohiva.play.silhouette.api.LoginInfo
-import models.Usuario
+import concurrent.Future
 
-import scala.concurrent.Future
+import com.mohiva.play.silhouette.api.LoginInfo
+
+import models.Usuario
 
 trait UsuarioDAO extends DAO {
   def find(loginInfo: LoginInfo): Future[Option[Usuario]]

@@ -11,5 +11,4 @@ case class Usuario(
   nomeCompleto: String,
   email: String,
   avatarURL: Option[String],
-  ativado: Boolean
-) extends Identity
+  ativado: Boolean) extends Identity
