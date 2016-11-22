@@ -6,7 +6,7 @@ import concurrent.Future
 
 import models.{ Resposta, RespostaQuestao }
 
-trait RespostaDAO extends DAO {
+trait RespostaDAO {
   def add(instancia: Resposta): Future[Resposta]
   def list: Future[Seq[Resposta]]
   def listByAluno(id: UUID): Future[Seq[RespostaQuestao]]

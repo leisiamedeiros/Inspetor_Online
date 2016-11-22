@@ -8,7 +8,7 @@ import org.joda.time.DateTime
 
 import models.AuthToken
 
-trait AuthTokenDAO extends DAO {
+trait AuthTokenDAO {
   def find(id: UUID): Future[Option[AuthToken]]
   def findExpired(dateTime: DateTime): Future[Seq[AuthToken]]
   def save(token: AuthToken): Future[AuthToken]

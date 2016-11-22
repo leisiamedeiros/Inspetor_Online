@@ -7,12 +7,11 @@ import com.mohiva.play.silhouette.impl.providers.OAuth2Info
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 
 import javax.inject.Inject
-import models.daos.api.DAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class OAuth2InfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[OAuth2Info] with DAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[OAuth2Info] with DAO {
 
   import driver.api._
 
@@ -72,7 +71,7 @@ class OAuth2InfoDAOImpl @Inject() (
       .joinLeft(oauth2Infos).on(_.id === _.loginInfoId)
     val action = query.result.head.flatMap {
       case (bdLoginInfo, Some(bdOAuth2Info)) => updateAction(loginInfo, authInfo)
-      case (bdLoginInfo, None) => addAction(loginInfo, authInfo)
+      case (bdLoginInfo, None)               => addAction(loginInfo, authInfo)
     }
     db.run(action).map(_ => authInfo)
   }

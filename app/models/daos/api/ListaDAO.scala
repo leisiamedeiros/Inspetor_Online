@@ -6,7 +6,7 @@ import concurrent.Future
 
 import models.Lista
 
-trait ListaDAO extends DAO {
+trait ListaDAO {
   def add(instancia: Lista): Future[Lista]
   def list: Future[Seq[Lista]]
   def get(id: Int): Future[Option[Lista]]

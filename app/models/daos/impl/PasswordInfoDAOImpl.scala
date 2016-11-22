@@ -7,12 +7,11 @@ import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 
 import javax.inject.Inject
-import models.daos.api.DAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class PasswordInfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[PasswordInfo] with DAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[PasswordInfo] with DAO {
 
   import driver.api._
 
@@ -59,7 +58,7 @@ class PasswordInfoDAOImpl @Inject() (
       .joinLeft(passwordInfos).on(_.id === _.loginInfoId)
     val action = query.result.head.flatMap {
       case (bdLoginInfo, Some(bdPasswordInfo)) => updateAction(loginInfo, authInfo)
-      case (bdLoginInfo, None) => addAction(loginInfo, authInfo)
+      case (bdLoginInfo, None)                 => addAction(loginInfo, authInfo)
     }
     db.run(action).map(_ => authInfo)
   }

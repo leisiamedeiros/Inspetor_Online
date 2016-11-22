@@ -8,7 +8,7 @@ import com.mohiva.play.silhouette.api.LoginInfo
 
 import models.Usuario
 
-trait UsuarioDAO extends DAO {
+trait UsuarioDAO {
   def find(loginInfo: LoginInfo): Future[Option[Usuario]]
   def find(id: UUID): Future[Option[Usuario]]
   def save(usuario: Usuario): Future[Usuario]

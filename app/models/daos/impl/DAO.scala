@@ -1,4 +1,4 @@
-package models.daos.api
+package models.daos.impl
 
 import play.api.db.slick.HasDatabaseConfigProvider
 import utils.PostgresDriver

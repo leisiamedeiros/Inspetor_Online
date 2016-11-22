@@ -4,7 +4,7 @@ import concurrent.Future
 
 import models.Teste
 
-trait TesteDAO extends DAO {
+trait TesteDAO {
   def add(instancia: Teste): Future[Teste]
   def list: Future[Seq[Teste]]
   def get(id: Int): Future[Option[Teste]]

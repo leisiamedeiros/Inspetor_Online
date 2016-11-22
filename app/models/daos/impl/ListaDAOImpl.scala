@@ -9,9 +9,8 @@ import models.Lista
 import models.daos.api.ListaDAO
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
 class ListaDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends ListaDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends ListaDAO with DAO {
 
   import driver.api._
 

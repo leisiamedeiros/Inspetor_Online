@@ -1,19 +1,16 @@
 package models.daos.impl
 
 import java.util.UUID
-
 import concurrent.Future
-
 import org.joda.time.DateTime
-
 import javax.inject.Inject
 import models.AuthToken
-import models.daos.api.AuthTokenDAO
+import models.daos.api.{ AuthTokenDAO }
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class AuthTokenDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends AuthTokenDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends AuthTokenDAO with DAO {
 
   import driver.api._
 

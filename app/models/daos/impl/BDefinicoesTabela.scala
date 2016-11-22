@@ -1,11 +1,8 @@
-package models.daos.api
+package models.daos.impl
 
 import java.util.UUID
-
 import org.joda.time.DateTime
-
 import com.mohiva.play.silhouette.api.LoginInfo
-
 import slick.lifted.ProvenShape.proveShapeOf
 import utils.PostgresDriver
 

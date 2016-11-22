@@ -22,11 +22,11 @@ import play.api.mvc.MultipartFormData.FilePart
 import utils.auth.{ DefaultEnv, WithRole }
 
 class ProfessorController @Inject() (
-  val messagesApi: MessagesApi,
-  silhouette: Silhouette[DefaultEnv],
-  listaDAO: ListaDAO,
-  questaoDAO: QuestaoDAO,
-  testeDAO: TesteDAO) extends Controller with I18nSupport {
+    val messagesApi: MessagesApi,
+    silhouette: Silhouette[DefaultEnv],
+    listaDAO: ListaDAO,
+    questaoDAO: QuestaoDAO,
+    testeDAO: TesteDAO) extends Controller with I18nSupport {
 
   val professor = silhouette.SecuredAction(WithRole("professor"))
   def usuario(implicit request: SecuredRequest[DefaultEnv, _]) = request.identity
@@ -70,11 +70,11 @@ class ProfessorController @Inject() (
   def interpretarTeste(teste: File): (String, String) = {
     val linhas = Source.fromFile(teste).getLines
     val (entrada, saida, _) = linhas.foldLeft("", "", true) {
-      case (a @ (entrada, saida, a3), b) => b match {
-        case "#entrada" => (entrada, saida, true)
-        case "#saida" => (entrada, saida, false)
-        case texto if a3 => (entrada + texto + "\n", saida, true)
-        case texto => (entrada, saida + texto + "\n", false)
+      case (a @ (entrada, saida, a3), texto) => texto match {
+        case "#entrada" => a.copy(_3 = true) // (entrada, saida, true)
+        case "#saida"   => a.copy(_3 = false) // (entrada, saida, false)
+        case _ if a3    => a.copy(_1 = entrada + texto + "\n") // (entrada + texto + "\n", saida, true)
+        case _          => a.copy(_2 = saida + texto + "\n") //(entrada, saida + texto + "\n", false)
       }
     }
     return (entrada, saida)
@@ -92,7 +92,7 @@ class ProfessorController @Inject() (
             fileSeq.filterNot(_.filename.isEmpty) map { f =>
               val (entrada, saida) = interpretarTeste(f.ref.file) match {
                 case ("", s) => (None, s)
-                case (e, s) => (Some(e), s)
+                case (e, s)  => (Some(e), s)
               }
               val newTeste = Teste(0, entrada, saida, qres.id)
               testeDAO.add(newTeste)

@@ -17,12 +17,12 @@ import play.api.mvc.Controller
 import utils.auth.DefaultEnv
 
 class AtivacaoContaController @Inject() (
-  val messagesApi: MessagesApi,
-  silhouette: Silhouette[DefaultEnv],
-  usuarioService: UsuarioService,
-  authTokenService: AuthTokenService,
-  mailerClient: MailerClient,
-  implicit val webJarAssets: WebJarAssets) extends Controller with I18nSupport {
+    val messagesApi: MessagesApi,
+    silhouette: Silhouette[DefaultEnv],
+    usuarioService: UsuarioService,
+    authTokenService: AuthTokenService,
+    mailerClient: MailerClient,
+    implicit val webJarAssets: WebJarAssets) extends Controller with I18nSupport {
   def ativar(token: UUID) = silhouette.UnsecuredAction.async { implicit request =>
     authTokenService.validate(token).flatMap {
       case Some(authToken) => usuarioService.retrieve(authToken.usuarioID).flatMap {

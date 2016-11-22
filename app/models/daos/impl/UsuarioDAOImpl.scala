@@ -1,19 +1,16 @@
 package models.daos.impl
 
 import java.util.UUID
-
 import concurrent.Future
-
 import com.mohiva.play.silhouette.api.LoginInfo
-
 import javax.inject.Inject
 import models.Usuario
-import models.daos.api.UsuarioDAO
+import models.daos.api.{ UsuarioDAO }
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class UsuarioDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends UsuarioDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends UsuarioDAO with DAO {
 
   import driver.api._
 

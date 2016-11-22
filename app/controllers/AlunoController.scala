@@ -11,22 +11,22 @@ import com.mohiva.play.silhouette.api.actions.SecuredRequest
 
 import forms.RespostaForm
 import javax.inject.Inject
-import models.{ Resposta, Usuario }
+import models.Resposta
 import models.daos.api.{ ListaDAO, QuestaoDAO, RespostaDAO, TesteDAO }
 import play.api.i18n.{ I18nSupport, MessagesApi }
-import play.api.mvc.Controller
+import play.api.mvc.{ AnyContent, Controller }
 import utils.auth.{ DefaultEnv, WithRole }
 
 class AlunoController @Inject() (
-  val messagesApi: MessagesApi,
-  silhouette: Silhouette[DefaultEnv],
-  listaDAO: ListaDAO,
-  questaoDAO: QuestaoDAO,
-  respostaDAO: RespostaDAO,
-  testeDAO: TesteDAO) extends Controller with I18nSupport {
+    val messagesApi: MessagesApi,
+    silhouette: Silhouette[DefaultEnv],
+    listaDAO: ListaDAO,
+    questaoDAO: QuestaoDAO,
+    respostaDAO: RespostaDAO,
+    testeDAO: TesteDAO) extends Controller with I18nSupport {
 
   val aluno = silhouette.SecuredAction(WithRole("aluno"))
-  def usuario(implicit request: SecuredRequest[DefaultEnv, _]) = request.identity
+  def usuario(implicit request: SecuredRequest[DefaultEnv, AnyContent]) = request.identity
 
   def respostas = aluno.async { implicit request =>
     respostaDAO.listByAluno(usuario.id).map { respostas =>
@@ -47,13 +47,11 @@ class AlunoController @Inject() (
   }
 
   def resposta(id: Int) = aluno.async { implicit request =>
-    respostaDAO.get(id) map { respostaOption =>
-      respostaOption match {
-        case Some(resposta) =>
-          Ok(views.html.aluno.resposta(resposta, usuario))
-        case None =>
-          NotFound
-      }
+    respostaDAO.get(id) map {
+      case Some(resposta) =>
+        Ok(views.html.aluno.resposta(resposta, usuario))
+      case None =>
+        NotFound
     }
   }
 

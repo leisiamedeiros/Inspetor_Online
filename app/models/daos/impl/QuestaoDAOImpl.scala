@@ -1,15 +1,14 @@
 package models.daos.impl
 
 import concurrent.Future
-
 import javax.inject.Inject
 import models.Questao
-import models.daos.api.QuestaoDAO
+import models.daos.api.{ QuestaoDAO }
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class QuestaoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider) extends QuestaoDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends QuestaoDAO with DAO {
 
   import driver.api._
 

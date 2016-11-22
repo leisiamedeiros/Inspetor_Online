@@ -11,14 +11,14 @@ trait Interpretador {
 
   def interpretar(codigo: String, entrada: Option[String]): Option[String] = {
     val arquivoCodigo: File = File.createTempFile("codigo", ".tmp")
-    var pw = new PrintWriter(arquivoCodigo)
+    val pw = new PrintWriter(arquivoCodigo)
     pw.write(codigo)
     pw.close
     var saida_stream: Stream[String] = null
     entrada match {
       case Some(e) => {
         val arquivoEntrada = File.createTempFile("entrada", ".tmp")
-        pw = new PrintWriter(arquivoEntrada)
+        val pw = new PrintWriter(arquivoEntrada)
         pw.write(e)
         pw.close
         try {
