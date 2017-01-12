@@ -42,7 +42,7 @@ class CadastroController @Inject() (
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         usuarioService.retrieve(loginInfo).flatMap {
           case Some(usuario) =>
-            val url = routes.AutenticacaoController.login().absoluteURL()
+            val url = routes.MainController.index().absoluteURL()
             mailerClient.send(Email(
               subject = Messages("email.ja.cadastrado.assunto"),
               from = Messages("email.remetente"),

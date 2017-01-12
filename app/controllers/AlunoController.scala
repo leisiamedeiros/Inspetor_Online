@@ -25,7 +25,7 @@ class AlunoController @Inject() (
   testeDAO: TesteDAO
 ) extends Controller with I18nSupport {
 
-  val aluno = silhouette.SecuredAction(WithRole("aluno"))
+  val aluno = silhouette.SecuredAction(WithRole(List("aluno", "admin")))
 
   def respostas = aluno.async { implicit request =>
     val usuario: Usuario = request.identity

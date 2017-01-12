@@ -64,6 +64,29 @@ class UsuarioDAOImpl @Inject() (
     }
     db.run(action)
   }
+  def find(email: String): Future[Option[Usuario]] = {
+    val query = usuarios.filter(_.email === email)
+      .join(usuarioLoginInfos).on(_.id === _.usuarioID)
+      .join(loginInfos).on(_._2.loginInfoId === _.id)
+      .result.headOption
+    val action = for {
+      queryResult <- query
+    } yield {
+      queryResult.map {
+        case ((usuarioRow, usuarioLoginInfoRow), loginInfoRow) =>
+          Usuario(
+            usuarioRow.id,
+            new LoginInfo(loginInfoRow.providerID, loginInfoRow.providerKey),
+            usuarioRow.papel,
+            usuarioRow.nomeCompleto,
+            usuarioRow.email,
+            usuarioRow.avatarURL,
+            usuarioRow.ativado
+          )
+      }
+    }
+    db.run(action)
+  }
   def save(usuario: Usuario): Future[Usuario] = {
     val bdUsuario = BDUsuario(
       usuario.id,

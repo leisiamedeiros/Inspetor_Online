@@ -12,6 +12,9 @@ POST   /cadastrar                                   controllers.CadastroControll
 
 GET    /conta/ativar/:token                         controllers.AtivacaoContaController.ativar(token: java.util.UUID)
 
+GET    /admin/alterarpapel                          controllers.AdminController.alterarPapel
+POST   /admin/alterarpapel                          controllers.AdminController.fazerAlteracao
+
 GET    /aluno/respostas                             controllers.AlunoController.respostas
 GET    /aluno/resposta/:id                          controllers.AlunoController.resposta(id: Int)
 GET    /aluno/listas                                controllers.AlunoController.listas

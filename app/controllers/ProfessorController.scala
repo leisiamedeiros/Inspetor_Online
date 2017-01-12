@@ -28,7 +28,7 @@ class ProfessorController @Inject() (
   testeDAO: TesteDAO
 ) extends Controller with I18nSupport {
 
-  val professor = silhouette.SecuredAction(WithRole("professor"))
+  val professor = silhouette.SecuredAction(WithRole(List("professor", "admin")))
 
   def listas = professor.async { implicit request =>
     val usuario: Usuario = request.identity
