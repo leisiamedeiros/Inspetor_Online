@@ -1,0 +1,43 @@
+@(alterarPapelForm: Form[forms.AlterarPapelFormData], usuario: Usuario)(implicit request: RequestHeader, flash: Flash, messages: Messages)
+
+@import helper._
+
+@scripts = {
+    <script type="text/javascript" charset="utf-8">
+        window.onload = function() {
+            $(document).ready(function() {
+                $('select').material_select();
+            });
+        }
+    </script>
+}
+
+@main("Alterar Papel | Administração - Inspetor Online", Some(usuario), None, scripts) {
+    <div class="section">
+        <div class="container">
+          <h5 class="teal-text center flow-text">Alterar Papel</h5>
+        </div>
+    </div>
+    <div class="row">
+        <form class="col s8 offset-s2" action="@routes.AdminController.fazerAlteracao" method="post" enctype="multipart/form-data">
+          @CSRF.formField
+          <div class="input-field">
+              <label>E-mail</label>
+              <input name="email" id="email" type="text" class="form-control" required/>
+          </div>
+          <div class="input-field">
+              <select name="papel" id="papel">
+                <option value="" disabled selected>Escolha o papel</option>
+                <option value="professor">Professor</option>
+                <option value="aluno">Aluno</option>
+              </select>
+              <label>Papel</label>
+          </div>
+          <div class="input-field">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <a class="btn red" href="@routes.MainController.index">Voltar</a>
+          </div>
+        </form>
+    </div>
+
+}

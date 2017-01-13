@@ -35,7 +35,10 @@
                                 <a href="@routes.AutenticacaoController.logout">Sair</a>
                             </li>
                             <li><div class="divider"></div></li>
-                            @if(u.papel == "professor") {
+                            @if(u.papel == "admin") {
+                                <li><a class="waves-effect" href="@routes.AdminController.alterarPapel">Alterar Papel</a></li>
+                            }
+                            @if(u.papel == "professor" || u.papel == "admin") {
                                 <li><a class="waves-effect" href="@routes.ProfessorController.listas">Minhas listas</a></li>
                                 <li class="no-padding">
                                     <ul class="collapsible collapsible-accordion">
@@ -53,7 +56,8 @@
                                     </li>
                                     </ul>
                                 </li>
-                            } else {
+                            }
+                            @if(u.papel == "aluno" || u.papel == "admin") {
                                 <li><a class="waves-effect" href="@routes.AlunoController.respostas">Minhas respostas</a></li>
                             }
                         }

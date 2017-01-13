@@ -18,8 +18,8 @@ libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette-persistence" % "4.0.0",
   "com.mohiva" %% "play-silhouette-crypto-jca" % "4.0.0",
   "org.postgresql" % "postgresql" % "9.4.1211",
-  "com.typesafe.play" %% "play-slick" % "2.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
+  "com.typesafe.play" %% "play-slick" % "2.0.2",
+  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.2",
   "com.github.tminglei" %% "slick-pg" % "0.14.3",
   "joda-time" % "joda-time" % "2.9.4", // 2.8
   "org.joda" % "joda-convert" % "1.8", // 1.7
