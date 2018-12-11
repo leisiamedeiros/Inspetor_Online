@@ -4,5 +4,4 @@ case class Teste(
   id: Int,
   entrada: Option[String],
   saida: String,
-  questaoID: Int
-)
+  questaoID: Int)

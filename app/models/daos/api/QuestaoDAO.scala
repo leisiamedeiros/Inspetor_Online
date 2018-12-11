@@ -1,10 +1,10 @@
 package models.daos.api
 
+import concurrent.Future
+
 import models.Questao
 
-import scala.concurrent.Future
-
-trait QuestaoDAO extends DAO {
+trait QuestaoDAO {
   def add(instancia: Questao): Future[Questao]
   def list: Future[Seq[Questao]]
   def get(id: Int): Future[Option[Questao]]

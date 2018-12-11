@@ -1,12 +1,12 @@
 package models.daos.api
 
-import models.{ Resposta, RespostaQuestao }
-
 import java.util.UUID
 
-import scala.concurrent.Future
+import concurrent.Future
 
-trait RespostaDAO extends DAO {
+import models.{ Resposta, RespostaQuestao }
+
+trait RespostaDAO {
   def add(instancia: Resposta): Future[Resposta]
   def list: Future[Seq[Resposta]]
   def listByAluno(id: UUID): Future[Seq[RespostaQuestao]]

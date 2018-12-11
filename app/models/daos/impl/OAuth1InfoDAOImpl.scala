@@ -1,18 +1,17 @@
 package models.daos.impl
 
+import concurrent.Future
+
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.impl.providers.OAuth1Info
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import play.api.libs.concurrent.Execution.Implicits._
+
 import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.Future
-
-import models.daos.api.DAO
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class OAuth1InfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends DelegableAuthInfoDAO[OAuth1Info] with DAO {
+  protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[OAuth1Info] with DAO {
 
   import driver.api._
 
@@ -31,8 +30,7 @@ class OAuth1InfoDAOImpl @Inject() (
           0,
           authInfo.token,
           authInfo.secret,
-          bdLoginInfo.id
-        )
+          bdLoginInfo.id)
     }.transactionally
 
   protected def updateAction(loginInfo: LoginInfo, authInfo: OAuth1Info) =
@@ -45,8 +43,7 @@ class OAuth1InfoDAOImpl @Inject() (
     db.run(oauth1InfoQuery(loginInfo)
       .result.headOption).map { bdOAuth1InfoOption =>
       bdOAuth1InfoOption.map(bdOAuth1Info =>
-        OAuth1Info(bdOAuth1Info.token, bdOAuth1Info.secret)
-      )
+        OAuth1Info(bdOAuth1Info.token, bdOAuth1Info.secret))
     }
   }
 

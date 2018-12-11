@@ -1,19 +1,16 @@
 package models.daos.impl
 
-import models.Lista
-import models.daos.api.ListaDAO
-
-import javax.inject.Inject
-import play.api.db.slick.DatabaseConfigProvider
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
-import scala.concurrent.Future
-
 import java.util.UUID
 
+import concurrent.Future
+
+import javax.inject.Inject
+import models.Lista
+import models.daos.api.ListaDAO
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 class ListaDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends ListaDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends ListaDAO with DAO {
 
   import driver.api._
 
@@ -22,8 +19,7 @@ class ListaDAOImpl @Inject() (
       instancia.id,
       instancia.nome,
       instancia.assunto,
-      instancia.usuarioID
-    )
+      instancia.usuarioID)
     val query = listas
     db.run(query += bdLista).map(_ => instancia)
   }

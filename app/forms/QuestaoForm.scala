@@ -1,7 +1,7 @@
 package forms
 
-import play.api.data._
-import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.Forms.{ mapping, nonEmptyText, number, text }
 
 case class QuestaoFormData(numero: Int, enunciado: String, gabarito: String, entrada: String, saida: String)
 
@@ -12,7 +12,5 @@ object QuestaoForm {
       "enunciado" -> nonEmptyText,
       "gabarito" -> nonEmptyText,
       "entrada" -> text,
-      "saida" -> nonEmptyText
-    )(QuestaoFormData.apply)(QuestaoFormData.unapply)
-  )
+      "saida" -> nonEmptyText)(QuestaoFormData.apply)(QuestaoFormData.unapply))
 }

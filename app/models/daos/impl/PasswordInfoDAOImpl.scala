@@ -1,18 +1,17 @@
 package models.daos.impl
 
+import concurrent.Future
+
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import play.api.libs.concurrent.Execution.Implicits._
+
 import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.Future
-
-import models.daos.api.DAO
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class PasswordInfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends DelegableAuthInfoDAO[PasswordInfo] with DAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[PasswordInfo] with DAO {
 
   import driver.api._
 
@@ -31,8 +30,7 @@ class PasswordInfoDAOImpl @Inject() (
           authInfo.hasher,
           authInfo.password,
           authInfo.salt,
-          bdLoginInfo.id
-        )
+          bdLoginInfo.id)
     }.transactionally
 
   protected def updateAction(loginInfo: LoginInfo, authInfo: PasswordInfo) =
@@ -45,8 +43,7 @@ class PasswordInfoDAOImpl @Inject() (
     db.run(passwordInfoQuery(loginInfo)
       .result.headOption).map { bdPasswordInfoOption =>
       bdPasswordInfoOption.map(bdPasswordInfo =>
-        PasswordInfo(bdPasswordInfo.hasher, bdPasswordInfo.password, bdPasswordInfo.salt)
-      )
+        PasswordInfo(bdPasswordInfo.hasher, bdPasswordInfo.password, bdPasswordInfo.salt))
     }
   }
 
@@ -61,7 +58,7 @@ class PasswordInfoDAOImpl @Inject() (
       .joinLeft(passwordInfos).on(_.id === _.loginInfoId)
     val action = query.result.head.flatMap {
       case (bdLoginInfo, Some(bdPasswordInfo)) => updateAction(loginInfo, authInfo)
-      case (bdLoginInfo, None) => addAction(loginInfo, authInfo)
+      case (bdLoginInfo, None)                 => addAction(loginInfo, authInfo)
     }
     db.run(action).map(_ => authInfo)
   }

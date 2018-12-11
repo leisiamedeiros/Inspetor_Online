@@ -1,46 +1,45 @@
 package controllers
 
-import javax.inject.Inject
 import java.io.File
+
+import concurrent.Await
+import concurrent.ExecutionContext.Implicits.global
+import concurrent.Future
+import concurrent.duration.Duration
 import scala.io.Source
 
-import play.api._
-import play.api.Logger
-import play.api.mvc._
-import play.api.mvc.MultipartFormData.FilePart
-import play.api.i18n.{ MessagesApi, I18nSupport }
-import play.api.libs.Files.TemporaryFile
-import scala.concurrent.duration.Duration
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ Future, Await }
-import models.{ Lista, Questao, Teste, Usuario }
-import models.daos.api.{ ListaDAO, QuestaoDAO, TesteDAO }
-import forms.{ ListaForm, QuestaoForm }
-
 import com.mohiva.play.silhouette.api.Silhouette
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
+
+import forms.{ ListaForm, QuestaoForm }
+import javax.inject.Inject
+import models.{ Lista, Questao, Teste }
+import models.daos.api.{ ListaDAO, QuestaoDAO, TesteDAO }
+import play.api.i18n.{ I18nSupport, MessagesApi }
+import play.api.libs.Files.TemporaryFile
+import play.api.mvc.Controller
+import play.api.mvc.MultipartFormData.FilePart
 import utils.auth.{ DefaultEnv, WithRole }
 
 class ProfessorController @Inject() (
-  val messagesApi: MessagesApi,
-  silhouette: Silhouette[DefaultEnv],
-  listaDAO: ListaDAO,
-  questaoDAO: QuestaoDAO,
-  testeDAO: TesteDAO
-) extends Controller with I18nSupport {
+    val messagesApi: MessagesApi,
+    silhouette: Silhouette[DefaultEnv],
+    listaDAO: ListaDAO,
+    questaoDAO: QuestaoDAO,
+    testeDAO: TesteDAO) extends Controller with I18nSupport {
 
-  val professor = silhouette.SecuredAction(WithRole(List("professor", "admin")))
+  val professor = silhouette.SecuredAction(WithRole("professor"))
+  def usuario(implicit request: SecuredRequest[DefaultEnv, _]) = request.identity
 
   def listas = professor.async { implicit request =>
-    val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
-      Ok(views.html.professor.listas(listas, request.identity))
+      Ok(views.html.professor.listas(listas, usuario))
     }
   }
 
   def novaLista = professor.async { implicit request =>
-    val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
-      Ok(views.html.professor.novalista(ListaForm.form, request.identity, listas))
+      Ok(views.html.professor.novalista(ListaForm.form, usuario, listas))
     }
   }
 
@@ -48,46 +47,37 @@ class ProfessorController @Inject() (
     ListaForm.form.bindFromRequest.fold(
       errors => Future(BadRequest),
       data => {
-        val newLista = Lista(0, data.nome, data.assunto, request.identity.id)
+        val newLista = Lista(0, data.nome, data.assunto, usuario.id)
         listaDAO.add(newLista).map(res =>
-          Redirect(routes.ProfessorController.listas())
-        )
+          Redirect(routes.ProfessorController.listas()))
       })
   }
 
   def questoes(id: Int) = professor.async { implicit request =>
-    val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
       Await.result(questaoDAO.list map { q =>
-        Ok(views.html.professor.questoes(id, q, request.identity, listas))
+        Ok(views.html.professor.questoes(id, q, usuario, listas))
       }, Duration.Inf)
     }
   }
 
   def novaQuestao(id: Int) = professor.async { implicit request =>
-    val usuario: Usuario = request.identity
     listaDAO.getByProfessor(usuario.id) map { listas =>
-      Ok(views.html.professor.novaquestao(id, QuestaoForm.form, request.identity, listas))
+      Ok(views.html.professor.novaquestao(id, QuestaoForm.form, usuario, listas))
     }
   }
 
-  def interpretarTeste(teste: File): Array[String] = {
-    var resultado = Array("", "")
-    var i = 0
+  def interpretarTeste(teste: File): (String, String) = {
     val linhas = Source.fromFile(teste).getLines
-    var linha = linhas.next
-    while (linhas.hasNext) {
-      linha match {
-        case "#entrada" => i = 0
-        case "#saida" => i = 1
-        case texto => {
-          resultado(i) += texto + "\n"
-        }
+    val (entrada, saida, _) = linhas.foldLeft("", "", true) {
+      case (a @ (entrada, saida, a3), texto) => texto match {
+        case "#entrada" => a.copy(_3 = true) // (entrada, saida, true)
+        case "#saida"   => a.copy(_3 = false) // (entrada, saida, false)
+        case _ if a3    => a.copy(_1 = entrada + texto + "\n") // (entrada + texto + "\n", saida, true)
+        case _          => a.copy(_2 = saida + texto + "\n") //(entrada, saida + texto + "\n", false)
       }
-      linha = linhas.next
     }
-    resultado(i) += linha
-    return resultado
+    return (entrada, saida)
   }
 
   def createQuestao(id: Int) = professor.async { implicit request =>
@@ -99,11 +89,10 @@ class ProfessorController @Inject() (
           val arquivosTeste: Option[Seq[FilePart[TemporaryFile]]] =
             request.body.asMultipartFormData.map(_.files)
           arquivosTeste.map { fileSeq =>
-            fileSeq.filterNot(_.filename == "") map { f =>
+            fileSeq.filterNot(_.filename.isEmpty) map { f =>
               val (entrada, saida) = interpretarTeste(f.ref.file) match {
-                case Array(e: String, s: String) => (Some(e), s)
-                case Array("", s: String) => (None, s)
-                case _ => (None, "")
+                case ("", s) => (None, s)
+                case (e, s)  => (Some(e), s)
               }
               val newTeste = Teste(0, entrada, saida, qres.id)
               testeDAO.add(newTeste)
@@ -113,5 +102,4 @@ class ProfessorController @Inject() (
         })
       })
   }
-
 }

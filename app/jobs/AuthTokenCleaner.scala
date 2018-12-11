@@ -1,19 +1,18 @@
 package jobs
 
-import javax.inject.Inject
+import concurrent.ExecutionContext.Implicits.global
 
-import akka.actor._
 import com.mohiva.play.silhouette.api.util.Clock
+
+import akka.actor.Actor
+import javax.inject.Inject
 import jobs.AuthTokenCleaner.Clean
 import models.services.api.AuthTokenService
 import utils.Logger
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class AuthTokenCleaner @Inject() (
   service: AuthTokenService,
-  clock: Clock
-) extends Actor with Logger {
+  clock: Clock) extends Actor with Logger {
   def receive: Receive = {
     case Clean =>
       val start = clock.now.getMillis

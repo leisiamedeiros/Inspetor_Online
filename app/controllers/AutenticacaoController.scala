@@ -1,26 +1,25 @@
 package controllers
 
-import javax.inject.Inject
+import concurrent.Future
+import concurrent.duration.FiniteDuration
+import language.postfixOps
 
-import com.mohiva.play.silhouette.api.Authenticator.Implicits._
-import com.mohiva.play.silhouette.api._
+import com.mohiva.play.silhouette.api.{ LoginEvent, Silhouette }
+import com.mohiva.play.silhouette.api.Authenticator.Implicits.RichDateTime
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{ Clock, Credentials }
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
-import com.mohiva.play.silhouette.impl.providers._
-import net.ceedubs.ficus.Ficus._
-import play.api.Configuration
-import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.mvc.Controller
-
-import scala.concurrent.Future
-import scala.concurrent.duration._
-import scala.language.postfixOps
+import com.mohiva.play.silhouette.impl.providers.{ CredentialsProvider, SocialProviderRegistry }
 
 import forms.LoginForm
+import javax.inject.Inject
 import models.services.api.UsuarioService
+import net.ceedubs.ficus.Ficus.{ finiteDurationReader, optionValueReader, toFicusConfig }
+import play.api.Configuration
+import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.mvc.Controller
 import utils.auth.DefaultEnv
 
 class AutenticacaoController @Inject() (
@@ -32,8 +31,7 @@ class AutenticacaoController @Inject() (
   socialProviderRegistry: SocialProviderRegistry,
   configuration: Configuration,
   clock: Clock,
-  implicit val webJarAssets: WebJarAssets
-) extends Controller with I18nSupport {
+  implicit val webJarAssets: WebJarAssets) extends Controller with I18nSupport {
 
   def login = silhouette.UnsecuredAction.async { implicit request =>
     LoginForm.form.bindFromRequest.fold(
@@ -52,15 +50,11 @@ class AutenticacaoController @Inject() (
                 case authenticator if data.lembrarMe =>
                   authenticator.copy(
                     expirationDateTime = clock.now + c.as[FiniteDuration](
-                    "silhouette.authenticator.rememberMe.authenticatorExpiry"
-                  ),
+                    "silhouette.authenticator.rememberMe.authenticatorExpiry"),
                     idleTimeout = c.getAs[FiniteDuration](
-                      "silhouette.authenticator.rememberMe.authenticatorIdleTimeout"
-                    ),
+                      "silhouette.authenticator.rememberMe.authenticatorIdleTimeout"),
                     cookieMaxAge = c.getAs[FiniteDuration](
-                      "silhouette.authenticator.rememberMe.rememberMe.cookieMaxAge"
-                    )
-                  )
+                      "silhouette.authenticator.rememberMe.rememberMe.cookieMaxAge"))
                 case authenticator => authenticator
               }.flatMap { authenticator =>
                 silhouette.env.eventBus.publish(LoginEvent(usuario, request))
@@ -78,8 +72,7 @@ class AutenticacaoController @Inject() (
       }.recover {
         case e: ProviderException =>
           Redirect(routes.MainController.index()).flashing("error" -> Messages("login.form.invalido"))
-      }
-    )
+      })
   }
 
   def logout = silhouette.SecuredAction.async { implicit request =>

@@ -1,18 +1,17 @@
 package models.daos.impl
 
+import concurrent.Future
+
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.impl.providers.OpenIDInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import play.api.libs.concurrent.Execution.Implicits._
+
 import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.Future
-
-import models.daos.api.DAO
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class OpenIDInfoDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends DelegableAuthInfoDAO[OpenIDInfo] with DAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends DelegableAuthInfoDAO[OpenIDInfo] with DAO {
 
   import driver.api._
 
@@ -27,21 +26,18 @@ class OpenIDInfoDAOImpl @Inject() (
         openIDInfos += BDOpenIDInfo(authInfo.id, bdLoginInfo.id),
         openIDAttributes ++= authInfo.attributes.map {
           case (key, value) => BDOpenIDAttribute(authInfo.id, key, value)
-        }
-      )
+        })
     }.transactionally
 
   protected def updateAction(loginInfo: LoginInfo, authInfo: OpenIDInfo) =
     openIDInfoQuery(loginInfo).result.head.flatMap { bdOpenIDInfo =>
       DBIO.seq(
         openIDInfos.filter(_.id === bdOpenIDInfo.id).update(
-          bdOpenIDInfo.copy(id = authInfo.id)
-        ),
+          bdOpenIDInfo.copy(id = authInfo.id)),
         openIDAttributes.filter(_.id === bdOpenIDInfo.id).delete,
         openIDAttributes ++= authInfo.attributes.map {
           case (key, value) => BDOpenIDAttribute(authInfo.id, key, value)
-        }
-      )
+        })
     }.transactionally
 
   def find(loginInfo: LoginInfo): Future[Option[OpenIDInfo]] = {
@@ -70,7 +66,7 @@ class OpenIDInfoDAOImpl @Inject() (
       .joinLeft(openIDInfos).on(_.id === _.loginInfoId)
     val action = query.result.head.flatMap {
       case (bdLoginInfo, Some(bdOpenIDInfo)) => updateAction(loginInfo, authInfo)
-      case (bdLoginInfo, None) => addAction(loginInfo, authInfo)
+      case (bdLoginInfo, None)               => addAction(loginInfo, authInfo)
     }
     db.run(action).map(_ => authInfo)
   }

@@ -11,8 +11,7 @@ case class Resposta(
   var estado: String,
   var nota: Option[Float],
   usuarioID: UUID,
-  questaoID: Int
-) {
+  questaoID: Int) {
 
   def compare(teste: Teste): Boolean = {
     val s = InterpretadorFabrica(this.linguagem)
@@ -71,5 +70,4 @@ case class RespostaQuestao(
   questaoNumero: Int,
   respostaID: Int,
   respostaEstado: String,
-  respostaNota: Option[Float]
-)
+  respostaNota: Option[Float])

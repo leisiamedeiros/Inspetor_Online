@@ -1,20 +1,16 @@
 package models.daos.impl
 
 import java.util.UUID
-
+import concurrent.Future
 import com.mohiva.play.silhouette.api.LoginInfo
-import models.Usuario
-import models.daos.api.UsuarioDAO
-
 import javax.inject.Inject
+import models.Usuario
+import models.daos.api.{ UsuarioDAO }
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import scala.concurrent.Future
-
 class UsuarioDAOImpl @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider
-) extends UsuarioDAO {
+    protected val dbConfigProvider: DatabaseConfigProvider) extends UsuarioDAO with DAO {
 
   import driver.api._
 
@@ -35,8 +31,7 @@ class UsuarioDAOImpl @Inject() (
             usuarioRow.nomeCompleto,
             usuarioRow.email,
             usuarioRow.avatarURL,
-            usuarioRow.ativado
-          )
+            usuarioRow.ativado)
       }
     }
     db.run(action)
@@ -58,8 +53,7 @@ class UsuarioDAOImpl @Inject() (
             usuarioRow.nomeCompleto,
             usuarioRow.email,
             usuarioRow.avatarURL,
-            usuarioRow.ativado
-          )
+            usuarioRow.ativado)
       }
     }
     db.run(action)
@@ -94,18 +88,15 @@ class UsuarioDAOImpl @Inject() (
       usuario.nomeCompleto,
       usuario.email,
       usuario.avatarURL,
-      usuario.ativado
-    )
+      usuario.ativado)
     val bdLoginInfo = BDLoginInfo(
       0,
       usuario.loginInfo.providerID,
-      usuario.loginInfo.providerKey
-    )
+      usuario.loginInfo.providerKey)
     val loginInfoAction = {
       val retrieveLoginInfo = loginInfos.filter(
         info => info.providerID === usuario.loginInfo.providerID &&
-          info.providerKey === usuario.loginInfo.providerKey
-      ).result.headOption
+          info.providerKey === usuario.loginInfo.providerKey).result.headOption
 
       val insertLoginInfo = loginInfos.returning(loginInfos.map(_.id))
         .into((info, id) => info.copy(id = id)) += bdLoginInfo

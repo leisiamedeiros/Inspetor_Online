@@ -1,10 +1,10 @@
-package models.daos.api
+package models.daos.impl
 
-import com.mohiva.play.silhouette.api.LoginInfo
 import java.util.UUID
-import org.joda.time._
-import utils.PostgresDriver
+import org.joda.time.DateTime
+import com.mohiva.play.silhouette.api.LoginInfo
 import slick.lifted.ProvenShape.proveShapeOf
+import utils.PostgresDriver
 
 trait BDefinicoesTabela {
 
@@ -17,8 +17,7 @@ trait BDefinicoesTabela {
     nomeCompleto: String,
     email: String,
     avatarURL: Option[String],
-    ativado: Boolean
-  )
+    ativado: Boolean)
 
   // Tabela de Usuarios
   class Usuarios(tag: Tag) extends Table[BDUsuario](tag, "usuarios") {
@@ -34,8 +33,7 @@ trait BDefinicoesTabela {
   case class BDLoginInfo(
     id: Long,
     providerID: String,
-    providerKey: String
-  )
+    providerKey: String)
 
   class LoginInfos(tag: Tag) extends Table[BDLoginInfo](tag, "login_infos") {
     def id = column[Long]("id", O.AutoInc, O.PrimaryKey)
@@ -46,8 +44,7 @@ trait BDefinicoesTabela {
 
   case class BDUsuarioLoginInfo(
     usuarioID: UUID,
-    loginInfoId: Long
-  )
+    loginInfoId: Long)
 
   class UsuarioLoginInfos(tag: Tag) extends Table[BDUsuarioLoginInfo](tag, "usuarios_has_login_infos") {
     def usuarioID = column[UUID]("usuario_id")
@@ -62,8 +59,7 @@ trait BDefinicoesTabela {
     id: Int,
     nome: String,
     assunto: String,
-    usuarioID: UUID
-  )
+    usuarioID: UUID)
 
   // Tabela de Listas
   class Listas(tag: Tag) extends Table[BDLista](tag, "listas") {
@@ -81,8 +77,7 @@ trait BDefinicoesTabela {
     entrada: String,
     saida: String,
     gabarito: String,
-    listaID: Int
-  )
+    listaID: Int)
 
   // Tabela de Questoes
   class Questoes(tag: Tag) extends Table[BDQuestao](tag, "questoes") {
@@ -102,8 +97,7 @@ trait BDefinicoesTabela {
     id: Int,
     entrada: Option[String],
     saida: String,
-    questaoID: Int
-  )
+    questaoID: Int)
 
   // Tabela de Testes
   class Testes(tag: Tag) extends Table[BDTeste](tag, "testes") {
@@ -123,8 +117,7 @@ trait BDefinicoesTabela {
     estado: String,
     nota: Option[Float],
     usuarioID: UUID,
-    questaoID: Int
-  )
+    questaoID: Int)
 
   // Tabela de Respostas
   class Respostas(tag: Tag) extends Table[BDResposta](tag, "respostas") {
@@ -144,8 +137,7 @@ trait BDefinicoesTabela {
   case class BDAuthToken(
     id: UUID,
     usuarioID: UUID,
-    expiry: DateTime
-  )
+    expiry: DateTime)
 
   // Tabela de AuthTokens
   class AuthTokens(tag: Tag) extends Table[BDAuthToken](tag, "auth_tokens") {
@@ -161,8 +153,7 @@ trait BDefinicoesTabela {
     hasher: String,
     password: String,
     salt: Option[String],
-    loginInfoId: Long
-  )
+    loginInfoId: Long)
 
   // Tabela de PasswordInfos
   class PasswordInfos(tag: Tag) extends Table[BDPasswordInfo](tag, "password_infos") {
@@ -179,8 +170,7 @@ trait BDefinicoesTabela {
     id: Long,
     token: String,
     secret: String,
-    loginInfoId: Long
-  )
+    loginInfoId: Long)
 
   // Tabela de OAuth1Infos
   class OAuth1Infos(tag: Tag) extends Table[BDOAuth1Info](tag, "oauth1_infos") {
@@ -199,8 +189,7 @@ trait BDefinicoesTabela {
     tokenType: Option[String],
     expiresIn: Option[Int],
     refreshToken: Option[String],
-    loginInfoId: Long
-  )
+    loginInfoId: Long)
 
   // Tabela de OAuth2Infos
   class OAuth2Infos(tag: Tag) extends Table[BDOAuth2Info](tag, "oauth2_infos") {
@@ -217,8 +206,7 @@ trait BDefinicoesTabela {
 
   case class BDOpenIDInfo(
     id: String,
-    loginInfoId: Long
-  )
+    loginInfoId: Long)
 
   // Tabela de OpenIDInfos
   class OpenIDInfos(tag: Tag) extends Table[BDOpenIDInfo](tag, "openid_infos") {
@@ -232,8 +220,7 @@ trait BDefinicoesTabela {
   case class BDOpenIDAttribute(
     id: String,
     key: String,
-    value: String
-  )
+    value: String)
 
   // Tabela de OpenIDAttributes
   class OpenIDAttributes(tag: Tag) extends Table[BDOpenIDAttribute](tag, "openid_attribute") {
@@ -259,6 +246,5 @@ trait BDefinicoesTabela {
   val openIDAttributes = TableQuery[OpenIDAttributes]
 
   def loginInfoQuery(loginInfo: LoginInfo) = loginInfos.filter(
-    dbLoginInfo => dbLoginInfo.providerID === loginInfo.providerID && dbLoginInfo.providerKey === loginInfo.providerKey
-  )
+    dbLoginInfo => dbLoginInfo.providerID === loginInfo.providerID && dbLoginInfo.providerKey === loginInfo.providerKey)
 }

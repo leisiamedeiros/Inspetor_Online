@@ -1,13 +1,14 @@
 package models.daos.api
 
 import java.util.UUID
+
+import concurrent.Future
+
 import org.joda.time.DateTime
 
-import models.{ AuthToken, Usuario }
+import models.AuthToken
 
-import scala.concurrent.Future
-
-trait AuthTokenDAO extends DAO {
+trait AuthTokenDAO {
   def find(id: UUID): Future[Option[AuthToken]]
   def findExpired(dateTime: DateTime): Future[Seq[AuthToken]]
   def save(token: AuthToken): Future[AuthToken]

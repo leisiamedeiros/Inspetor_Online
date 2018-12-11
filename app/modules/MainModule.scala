@@ -1,11 +1,10 @@
 package modules
 
 import com.google.inject.AbstractModule
-import java.time.Clock
-import net.codingwell.scalaguice.ScalaModule
 
-import models.daos.api._
-import models.daos.impl._
+import models.daos.api.{ ListaDAO, QuestaoDAO, RespostaDAO, TesteDAO }
+import models.daos.impl.{ ListaDAOImpl, QuestaoDAOImpl, RespostaDAOImpl, TesteDAOImpl }
+import net.codingwell.scalaguice.ScalaModule
 
 class MainModule extends AbstractModule with ScalaModule {
 
